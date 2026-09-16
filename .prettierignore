@@ -1,0 +1,21 @@
+**/node_modules/
+**/dist/
+**/build/
+**/coverage/
+**/test-results/
+**/playwright-report/
+**/blob-report/
+**/.next/
+**/.tmp/
+**/package-lock.json
+
+# Immutable vendored baseline snapshot.
+docs/standards/
+
+# Verbatim license text; the PolyForm part must stay byte-identical to its source.
+LICENSE.md
+packages/ui/LICENSE.md
+
+# Managed by `next dev` (Next.js agent rules block); reproduced by its generator.
+apps/showcase/AGENTS.md
+apps/showcase/CLAUDE.md

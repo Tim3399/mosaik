@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Packed artifacts and temporary work
+*.tgz
+.tmp/
+
+# Test output
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# Local environment and logs
+.env*
+!.env.example
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
