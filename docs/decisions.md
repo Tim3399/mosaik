@@ -113,12 +113,15 @@ Statt CSS Modules gibt es Klassen mit dem Präfix `mosaik-`; Varianten und Zust�
 **Abwägung:** Globale Element-Regeln des Konsumenten, etwa Resets, wirken dadurch ebenfalls
 stärker. Der Komponentenvertrag beschreibt das, der Konsumententest deckt den Normalfall ab.
 
-### D-06 Light/Dark über `color-scheme` und `light-dark()`
+### D-06 Light/Dark über `color-scheme` und `light-dark()` — ersetzt durch D-15
 
 Ohne Angabe folgt die Darstellung dem System; ein Attribut am Container setzt den Modus für
 dessen Teilbaum. Es gibt keinen JavaScript-Zustand, also keine Hydrierungsdifferenz.
 **Zielbrowser:** aktuelle Chromium-, Firefox- und Safari/WebKit-Versionen; die genutzten
 Plattformfunktionen gehören zur Web-Baseline 2024 oder früher.
+
+**Ersetzt am 16.09.2026:** Die Integrationsprobe (D-14) hat gezeigt, dass `light-dark()` in
+Konsumenten-Builds nicht verlässlich ist. Der Mechanismus steht jetzt in D-15.
 
 ### D-07 Konsumentenabnahme in Next.js und Vite
 
@@ -162,6 +165,41 @@ zu übernehmen. Der Zusatz trägt noch die Versionsnummer 2.1.
 Sichtbare Texte und zugängliche Namen kommen per Props. Unvermeidbare Standardtexte sind
 englisch und ersetzbar.
 **Grund:** Die Konsumenten nutzen Deutsch (quiltor, mediagrab) und Englisch (schedule1_calc).
+
+### D-14 Ergebnis der Integrationsprobe (AP1, 16.09.2026)
+
+Geprüft wurde mit echten Builds: Paket, Next.js-Vorschau und die isolierten Konsumenten aus dem
+Tarball (Next.js 16.3.5 und Vite 8.3.0). Die Belege stehen im Projektprofil.
+
+| Befund                                                                                                                                                                                                                                                                     | Folge                                                                                                                                                                                                                                                   |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tsc` aus TypeScript 7.0.2 erzeugt je Datei ein Modul und eine Deklaration und erhält `"use client"`; ein Build dauert rund 130 ms.                                                                                                                                        | D-04 bestätigt; kein Rückfall auf TypeScript 6 oder tsdown nötig.                                                                                                                                                                                       |
+| `TextField` braucht keine Clientgrenze: React 19.3 stellt `useId` auch unter der `react-server`-Bedingung bereit.                                                                                                                                                          | `Button` und `TextField` sind ohne Direktive in Server Components nutzbar. Die Clientgrenze wird an `ColorField` geprüft; es hat dafür zusätzlich einen unkontrollierten Modus (`defaultValue`) und ist so direkt in einer Server Component verwendbar. |
+| Gegenprobe: Ohne `"use client"` in `ColorField` bricht der Produktionsbuild des Next.js-Konsumenten ab (`useState is not a function`).                                                                                                                                     | Der Konsumententest belegt die Clientgrenze tatsächlich.                                                                                                                                                                                                |
+| Next.js 16.3 verarbeitet die Paket-CSS erneut mit Lightning CSS und ersetzt `light-dark()` durch Variablen, die nur dort aufgelöst werden, wo das Token definiert ist (`:root`). Verschachtelte Modi versagen dann, und ohne `color-scheme` ergeben sich ungültige Farben. | D-15.                                                                                                                                                                                                                                                   |
+| TypeScript prüft seit 6.0 standardmäßig Side-Effect-Imports. Im Vite-Konsumenten schlug `import "@tim3399/mosaik/styles.css"` deshalb fehl (TS2882).                                                                                                                       | Das Paket liefert `dist/styles.css.d.ts` über die `types`-Bedingung des CSS-Exports aus; Are the Types Wrong prüft damit auch diesen Einstieg.                                                                                                          |
+| Next.js 16.3 entfernt im Produktionsbuild alle `@license`-Kommentare aus Client-JavaScript und -CSS, auch die von React. Vite 8 behält den Kommentar im CSS und entfernt ihn im JavaScript.                                                                                | L-01, Hinweispflicht.                                                                                                                                                                                                                                   |
+| `next dev` erlaubt nur einen Dev-Server je Checkout (`.next/dev/lock`). Ein zweiter Start bricht ab; der Launcher meldet das und räumt seine Prozesse auf.                                                                                                                 | Parallele Dev-Server brauchen getrennte Worktrees mit eigenem Port.                                                                                                                                                                                     |
+| `next dev` legt `apps/showcase/AGENTS.md` und `CLAUDE.md` mit einem verwalteten Block an und passt die `tsconfig.json` der Vorschau an (`allowJs`, `esModuleInterop`).                                                                                                     | Beides wird übernommen und committet; die Agent-Dateien sind vom Formatter ausgenommen.                                                                                                                                                                 |
+| Playwright ordnet `<input type="color">` der Rolle `textbox` zu.                                                                                                                                                                                                           | Tests wählen Felder über exakte Namen.                                                                                                                                                                                                                  |
+
+### D-15 Light/Dark über Modus-Attribut und private Umschaltvariablen
+
+- **Modus:** `data-mosaik-mode="light" | "dark" | "system"` an einem beliebigen Container setzt
+  ihn für dessen Teilbaum, auch verschachtelt, und setzt dort `color-scheme`. Ohne Attribut
+  rendern Komponenten hell. Für Anwendungen, die überwiegend aus mosaik bestehen, ist
+  `data-mosaik-mode="system"` am `<html>`-Element der dokumentierte Standard.
+- **Tokens:** Jedes Farbtoken lautet
+  `var(--_mosaik-light, <hell>) var(--_mosaik-dark, <dunkel>)`. Pro Scope hält genau eine der
+  beiden privaten Variablen `initial` (ihr Rückfallwert gilt), die andere ist leer. Die Tokens
+  werden an jedem Scope erneut deklariert und dort aufgelöst.
+- **Grund:** Das Verfahren ist bundlerunabhängig. Kein Konsumenten-Build schreibt die Tokens
+  um, und verschachtelte Modi funktionieren überall.
+- **Abwägung:** Die `color-scheme`-Einstellung einer Host-Seite übernehmen Komponenten nicht
+  automatisch.
+- **Nachweis:** Browsertest mit verschachtelten Scopes im Next.js-Produktionsbuild, Gegenprobe
+  mit Tokens nur an `:root` (Test schlägt fehl), Konsumententest ohne Modus-Attribut in Next.js
+  und Vite.
 
 ## 4. Lizenz
 
@@ -210,8 +248,12 @@ englisch und ersetzbar.
 - **Kein Open Source im Sinne der OSI;** mosaik wird als „source-available“ beschrieben.
 - **Hinweispflicht:** Wer Teile von mosaik weitergibt, auch gebündelt in einem ausgelieferten
   Frontend, muss die Lizenz oder ihre URL und die `Required Notice` mitgeben. Die gebauten
-  Paketdateien tragen dafür einen Lizenzkommentar; ob Konsumenten-Bundler ihn erhalten, prüft der
-  Konsumententest (D-07).
+  Paketdateien tragen dafür einen Lizenzkommentar.
+  - Der Konsumententest (D-07, D-14) zeigt, dass dieser Kommentar nicht verlässlich erhalten
+    bleibt: Next.js 16.3 entfernt ihn vollständig, Vite 8 behält ihn nur im CSS.
+  - Die Paket-README verlangt deshalb einen Hinweis in den Third-Party-Notices der Anwendung
+    (Lizenz-URL und `Required Notice`). Für Tims eigene Anwendungen ist das nicht nötig; er ist
+    der Rechteinhaber.
 - **Beiträge Dritter** werden vorerst nicht angenommen. Ohne passendes Beitragsmodell könnte
   Tim beigetragenen Code nicht frei weiterlizenzieren.
 - **Tims eigene Nutzung** als Rechteinhaber ist nicht beschränkt. Bei einer späteren Übertragung

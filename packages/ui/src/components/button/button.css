@@ -1,0 +1,64 @@
+@layer mosaik.components {
+  .mosaik-button {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--mosaik-spacing-compact);
+    min-height: var(--mosaik-size-control);
+    margin: 0;
+    padding-block: var(--mosaik-spacing-compact);
+    padding-inline: var(--mosaik-spacing-regular);
+    border: var(--mosaik-border-width) solid transparent;
+    border-radius: var(--mosaik-radius-control);
+    font-family: var(--mosaik-font-family);
+    font-size: var(--mosaik-text-control-size);
+    font-weight: var(--mosaik-text-control-weight);
+    line-height: var(--mosaik-text-control-line);
+    text-align: center;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+    transition-property: background-color, border-color, color;
+    transition-duration: var(--mosaik-duration-fast);
+    transition-timing-function: ease-out;
+  }
+
+  .mosaik-button:focus-visible {
+    outline: var(--mosaik-focus-ring-width) solid var(--mosaik-color-focus);
+    outline-offset: var(--mosaik-focus-ring-offset);
+  }
+
+  .mosaik-button[data-variant="primary"] {
+    background-color: var(--mosaik-accent-solid);
+    color: var(--mosaik-accent-on-solid);
+  }
+
+  .mosaik-button[data-variant="primary"]:hover:not(:disabled) {
+    background-color: var(--mosaik-accent-solid-hover);
+  }
+
+  .mosaik-button[data-variant="primary"]:active:not(:disabled) {
+    background-color: var(--mosaik-accent-solid-active);
+  }
+
+  .mosaik-button[data-variant="secondary"] {
+    border-color: var(--mosaik-color-border-strong);
+    background-color: var(--mosaik-color-surface);
+    color: var(--mosaik-color-text);
+  }
+
+  .mosaik-button[data-variant="secondary"]:hover:not(:disabled) {
+    background-color: var(--mosaik-color-subtle-hover);
+  }
+
+  .mosaik-button[data-variant="secondary"]:active:not(:disabled) {
+    background-color: var(--mosaik-color-subtle-active);
+  }
+
+  .mosaik-button:disabled {
+    border-color: transparent;
+    background-color: var(--mosaik-color-disabled-surface);
+    color: var(--mosaik-color-disabled-text);
+    cursor: not-allowed;
+  }
+}

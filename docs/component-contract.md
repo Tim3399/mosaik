@@ -52,15 +52,26 @@ Values that depend on the design direction (tokens, color roles) are settled in 
 
 ## Light and dark mode
 
-- Colors resolve through `color-scheme` and `light-dark()`. Without a scope, components follow
-  the system preference; a mode attribute on a container sets `light` or `dark` for its subtree.
+- `data-mosaik-mode="light" | "dark" | "system"` on any container selects the mode for its
+  subtree, including nested scopes, and sets `color-scheme` there. Without a scope, components
+  render in light mode. Applications built mainly from mosaik set `data-mosaik-mode="system"`
+  on `<html>`.
+- Color tokens never use `light-dark()`. Consumer bundlers (Next.js 16.3) rewrite it into a form
+  that only resolves at `:root`. Every color token is written as
+  `var(--_mosaik-light, <light>) var(--_mosaik-dark, <dark>)` and declared on `:root` and on
+  every mode scope; `tokens.test.ts` enforces the form. See decisions D-15.
 - No JavaScript state is needed for the mode, so server output and hydration always agree.
 - Overlays render inside the mode scope or carry its attribute.
 
 ## React and Next.js compatibility
 
-- `"use client"` only in modules that use hooks, context or browser APIs. Other components stay
-  usable directly in Server Components. The build must preserve directives.
+- `"use client"` only in modules that use state, effects, context or browser APIs. `useId`,
+  `useMemo` and `useCallback` are available in Server Components and need no directive.
+  Components without the directive stay usable directly in Server Components.
+- Stateful components also offer an uncontrolled mode without function props where that is
+  meaningful (for example `defaultValue` plus `name` for form fields), so a Server Component can
+  render them directly. The build must preserve directives; the package test proves it with a
+  Next.js consumer.
 - No unguarded access to `window`, `document` or storage at import time or during server
   rendering.
 - React and React DOM are peer dependencies (`^19.0.0`) and are never bundled.

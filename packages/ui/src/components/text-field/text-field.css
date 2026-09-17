@@ -1,0 +1,75 @@
+@layer mosaik.components {
+  .mosaik-text-field {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--mosaik-spacing-compact);
+    min-width: 0;
+    font-family: var(--mosaik-font-family);
+    color: var(--mosaik-color-text);
+  }
+
+  .mosaik-text-field__label {
+    font-size: var(--mosaik-text-label-size);
+    font-weight: var(--mosaik-text-label-weight);
+    line-height: var(--mosaik-text-label-line);
+    overflow-wrap: anywhere;
+  }
+
+  .mosaik-text-field__input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: var(--mosaik-size-control);
+    margin: 0;
+    padding-block: var(--mosaik-spacing-compact);
+    padding-inline: calc(var(--mosaik-spacing-compact) * 1.5);
+    border: var(--mosaik-border-width) solid var(--mosaik-color-border-strong);
+    border-radius: var(--mosaik-radius-control);
+    background-color: var(--mosaik-color-field);
+    color: var(--mosaik-color-text);
+    font-family: inherit;
+    font-size: var(--mosaik-text-body-size);
+    font-weight: var(--mosaik-text-body-weight);
+    line-height: var(--mosaik-text-body-line);
+  }
+
+  .mosaik-text-field__input::placeholder {
+    color: var(--mosaik-color-text-muted);
+    opacity: 1;
+  }
+
+  .mosaik-text-field__input:focus-visible {
+    outline: var(--mosaik-focus-ring-width) solid var(--mosaik-color-focus);
+    outline-offset: var(--mosaik-focus-ring-offset);
+  }
+
+  .mosaik-text-field__input:disabled {
+    border-color: var(--mosaik-color-border);
+    background-color: var(--mosaik-color-disabled-surface);
+    color: var(--mosaik-color-disabled-text);
+    cursor: not-allowed;
+  }
+
+  .mosaik-text-field__description,
+  .mosaik-text-field__error {
+    margin: 0;
+    font-size: var(--mosaik-text-meta-size);
+    line-height: var(--mosaik-text-meta-line);
+    overflow-wrap: anywhere;
+  }
+
+  .mosaik-text-field__description {
+    font-weight: var(--mosaik-text-meta-weight);
+    color: var(--mosaik-color-text-muted);
+  }
+
+  .mosaik-text-field__error {
+    font-weight: var(--mosaik-text-label-weight);
+    color: var(--mosaik-color-danger);
+  }
+
+  .mosaik-text-field[data-invalid] .mosaik-text-field__input {
+    border-color: var(--mosaik-color-danger);
+  }
+}

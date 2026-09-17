@@ -50,7 +50,8 @@ report the checks actually performed and remaining gaps.
 - **Component rules** from the contract, in short: no hard-coded visible text (labels come from
   props); classes are prefixed `mosaik-` and live in `@layer mosaik`; variants and states are
   `data-*` attributes; no global resets; at most two consumer-chosen base colors per component;
-  `"use client"` only in modules that use hooks, context or browser APIs.
+  `"use client"` only in modules that use state, effects, context or browser APIs; color tokens use
+  the private toggle form, never `light-dark()` (see `docs/decisions.md`, D-15).
 - **A missing building block in a consumer** is built locally in that tool. Report to the owner:
   purpose, why the library lacks it, which library components it uses, and whether it looks
   reusable. Do not add it to the library without that decision.

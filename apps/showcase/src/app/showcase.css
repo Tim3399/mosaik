@@ -1,0 +1,54 @@
+/*
+ * Page layout of the first probe page. Temporary: it gives way to library layout and text
+ * components (Stack, Surface, Text) once they exist in AP3.
+ */
+.showcase-body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--mosaik-color-canvas);
+  color: var(--mosaik-color-text);
+  font-family: var(--mosaik-font-family);
+  line-height: var(--mosaik-text-body-line);
+}
+
+.showcase-main {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mosaik-spacing-section);
+  max-width: 40rem;
+  margin-inline: auto;
+  padding: var(--mosaik-spacing-section) var(--mosaik-spacing-regular);
+}
+
+.showcase-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mosaik-spacing-regular);
+}
+
+.showcase-section > h1,
+.showcase-section > h2,
+.showcase-section > p {
+  margin: 0;
+}
+
+.showcase-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--mosaik-spacing-compact);
+}
+
+.showcase-meta {
+  font-size: var(--mosaik-text-meta-size);
+  color: var(--mosaik-color-text-muted);
+}
+
+.showcase-scope {
+  padding: var(--mosaik-spacing-regular);
+  border: var(--mosaik-border-width) solid var(--mosaik-color-border);
+  border-radius: var(--mosaik-radius-surface);
+  background-color: var(--mosaik-color-surface);
+  color: var(--mosaik-color-text);
+}

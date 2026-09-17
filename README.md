@@ -31,16 +31,35 @@ this time.
 
 ```bash
 npm ci
+npx playwright install chromium
 npm run doctor
 ```
 
+## Start
+
+```bash
+npm run dev
+```
+
+This builds the library, rebuilds it on changes and serves the showcase at
+http://127.0.0.1:3310. Set `MOSAIK_SHOWCASE_PORT` to use another port. `npm start` is the same
+command. Only one showcase dev server can run per checkout, because Next.js locks it; use a
+separate worktree for a second one.
+
 ## Commands
 
-| Command                | Purpose                                              |
-| ---------------------- | ---------------------------------------------------- |
-| `npm run doctor`       | Report runtime, dependency and browser prerequisites |
-| `npm run format`       | Format all maintained files (Biome and Prettier)     |
-| `npm run check:format` | Verify formatting without writing                    |
+| Command                 | Purpose                                                                     |
+| ----------------------- | --------------------------------------------------------------------------- |
+| `npm run doctor`        | Report runtime, dependency and browser prerequisites (read-only)            |
+| `npm run dev`           | Library watch build plus showcase dev server                                |
+| `npm run format`        | Format all maintained files (Biome and Prettier)                            |
+| `npm run check`         | Formatting check, lint and type checks                                      |
+| `npm test`              | Unit tests of the library (Vitest)                                          |
+| `npm run build`         | Library build and showcase production build                                 |
+| `npm run preview`       | Serve the showcase production build (after `npm run build`)                 |
+| `npm run test:e2e`      | Browser tests against the showcase production build (after `npm run build`) |
+| `npm run test:launcher` | Failure cases and cleanup of the development launcher                       |
+| `npm run test:package`  | Pack the library and test it in isolated Next.js and Vite apps              |
 
 The complete command map, pins and pending work are in
 [docs/PROJECT_PROFILE.md](docs/PROJECT_PROFILE.md).

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Read-only environment report. Exits nonzero when a requirement is not met.
-// It never installs, builds or writes files.
+// It never installs, builds or writes files. With --strict (used in CI), a Node.js or npm
+// version that differs from the exact pins fails instead of warning.
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
@@ -8,6 +9,8 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const strict = process.argv.includes("--strict");
+const pinDeviation = (inRange) => (inRange && !strict ? "warn" : "fail");
 const results = [];
 
 function report(status, name, detail, fix) {
@@ -47,7 +50,7 @@ if (actualNode === pinnedNode) {
   const actual = parseVersion(actualNode);
   const inRange = actual[0] === 22 && compare(actual, [22, 22, 0]) >= 0;
   report(
-    inRange ? "warn" : "fail",
+    pinDeviation(inRange),
     "Node.js",
     `${actualNode}; the release pin is ${pinnedNode}, development supports ${rootManifest.engines.node}`,
     `Install Node.js ${pinnedNode}, for example with "nvm install ${pinnedNode}".`,
@@ -64,7 +67,7 @@ try {
     const actual = parseVersion(actualNpm);
     const inRange = actual && compare(actual, [10, 9, 0]) >= 0 && actual[0] < 12;
     report(
-      inRange ? "warn" : "fail",
+      pinDeviation(inRange),
       "npm",
       `${actualNpm}; the release pin is ${pinnedNpm}, development supports ${rootManifest.engines.npm}`,
       `Install npm ${pinnedNpm} with "npm install --global npm@${pinnedNpm}".`,

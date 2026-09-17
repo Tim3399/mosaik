@@ -178,13 +178,14 @@ Bevorzugt CSS-basierte Vererbung beziehungsweise ein klar begrenzter Modus-Scope
 
 Serverseitige Ausgabe und erste Clientdarstellung dürfen keine widersprüchlichen Initialwerte erzeugen. Nicht pauschal Hydrierungswarnungen unterdrücken oder die gesamte Oberfläche bis nach dem Mount ausblenden.
 
-**Mechanismus (Rev. 2):** CSS-first mit `color-scheme` und `light-dark()`.
+**Mechanismus (Rev. 2, nach Integrationsprobe):** CSS-first über ein Modus-Attribut.
 
-- Ohne Angabe folgt die Darstellung der Systemeinstellung.
-- Ein Attribut an einem Container setzt `light` oder `dark` für dessen Teilbaum.
+- `data-mosaik-mode="light"`, `"dark"` oder `"system"` an einem beliebigen Container setzt den Modus für dessen Teilbaum, auch verschachtelt. Ohne Attribut rendern Komponenten hell.
+- Für eine vorwiegend aus mosaik gebaute Anwendung ist `data-mosaik-mode="system"` am `<html>`-Element der empfohlene Standard. Die Systemeinstellung gilt nicht automatisch, weil Komponenten sonst in einer hellen Host-Seite dunkel erscheinen könnten.
+- Farbtokens nutzen zwei private Umschaltvariablen statt `light-dark()`. Die Probe hat gezeigt: Next.js 16.3 schreibt `light-dark()` im Build in eine Variante um, die nur an `:root` aufgelöst wird. Damit versagen verschachtelte Modi und Seiten ohne `color-scheme`. Details in [decisions.md](decisions.md), D-06.
 - Weil kein JavaScript-Zustand nötig ist, gibt es keine Hydrierungsdifferenz und kein Aufblitzen.
 - Overlays rendern ihre Portale innerhalb des Modus-Scopes oder übernehmen dessen Attribut; das wird mit der ersten Overlay-Komponente geprüft.
-- **Zielbrowser:** aktuelle Versionen von Chromium, Firefox und Safari (WebKit). Die verwendeten Plattformfunktionen gehören zur Web-Baseline 2024 oder früher: `light-dark()`, Container Queries, `color-mix()`, OKLCH, `:has()`, `@layer`.
+- **Zielbrowser:** aktuelle Versionen von Chromium, Firefox und Safari (WebKit). Die verwendeten Plattformfunktionen gehören zur Web-Baseline 2024 oder früher, etwa Container Queries, `color-mix()`, OKLCH, `:has()` und `@layer`.
 
 ## 5. Komponentenvertrag und generische Logik
 
@@ -256,7 +257,7 @@ React und gegebenenfalls React DOM als passende Peer-Abhängigkeiten behandeln, 
 
 Bei Styles explizit prüfen, dass die Buildoptimierung notwendiges CSS nicht entfernt. Der Paketimport darf keine entfernten Schrift-, Icon-, Analyse- oder Lizenzdienste benötigen. Falls Assets erforderlich sind, deren Auslieferung und Rechte dokumentieren.
 
-**CSS-Auslieferung (Rev. 2):** Der Konsument importiert `@tim3399/mosaik/styles.css` einmal, etwa im Root-Layout. JavaScript-Module importieren kein CSS; das vermeidet bundlerabhängiges Verhalten und versehentlich entferntes CSS. Schwere spätere Bereiche bekommen bei Bedarf einen eigenen CSS-Einstieg. Die Schrift erbt die Komponente vom Konsumenten, als Rückfall dient ein System-Font-Stack. Fonts werden nicht ausgeliefert.
+**CSS-Auslieferung (Rev. 2):** Der Konsument importiert `@tim3399/mosaik/styles.css` einmal, etwa im Root-Layout. JavaScript-Module importieren kein CSS; das vermeidet bundlerabhängiges Verhalten und versehentlich entferntes CSS. Schwere spätere Bereiche bekommen bei Bedarf einen eigenen CSS-Einstieg. Komponenten verwenden zunächst einen System-Font-Stack; ob und wie Konsumenten die Schrift anpassen, wird mit der Designrichtung in AP2 entschieden. Fonts werden nicht ausgeliefert.
 
 Im Startumfang ein Paket behalten. Schwere Chart-/Editorbereiche später gesondert verteilen, sobald deren Abhängigkeiten dies rechtfertigen. Ein Unterpfadimport allein spart keine Installation einer normalen Pflichtabhängigkeit. Bundlegröße und Installationsumfang deshalb getrennt prüfen; optionale Peer-Abhängigkeiten oder weitere Pakete sind mögliche spätere Lösungen.[^npm-package]
 
@@ -504,7 +505,7 @@ Die Aussage betrifft das Paket. Sie ist keine automatische Neulizenzierung aller
 **Offene Punkte zur Lizenz:**
 
 - Eine fachkundige Prüfung der Zusatzerlaubnis ist weiterhin empfehlenswert. Tim hat die sofortige Anwendung ausdrücklich entschieden. Eine einmal veröffentlichte Erlaubnis gilt für bereits veröffentlichte Stände weiter.
-- **Hinweispflicht:** Wer mosaik in einem ausgelieferten Frontend weitergibt, muss die Lizenz oder ihre URL und die `Required Notice` mitgeben. Die gebauten Paketdateien enthalten dafür einen Lizenzkommentar. Ob Konsumenten-Bundler ihn erhalten, prüft der Konsumententest.
+- **Hinweispflicht:** Wer mosaik in einem ausgelieferten Frontend weitergibt, muss die Lizenz oder ihre URL und die `Required Notice` mitgeben. Die gebauten Paketdateien enthalten dafür einen Lizenzkommentar. Der Konsumententest zeigt aber: Next.js 16.3 entfernt ihn vollständig, Vite 8 behält ihn nur im CSS. Die Paketdokumentation verlangt deshalb einen Eintrag in den Third-Party-Notices der Anwendung.
 - **Beiträge Dritter** werden vorerst nicht angenommen, bis ein passendes Beitragsmodell festgelegt ist. Ohne ein solches Modell könnte Tim beigetragenen Code nicht frei weiterlizenzieren.
 
 Die gewählte Lizenz in Repository, Paketmetadaten und tatsächlich ausgeliefertem Archiv konsistent ausweisen. Beispielcode, Vorschaucode und fremde Bestandteile ausdrücklich zuordnen. Fremde Abhängigkeiten, Icons, Fonts oder übernommene Dateien nicht pauschal mit einer eigenen Einschränkung neu lizenzieren; ihre Bedingungen und erforderlichen Hinweise prüfen.
@@ -545,7 +546,7 @@ Konsumenten übernehmen Updates bewusst mit passender Prüfung. Keine automatisc
 
 **Rev. 2:**
 
-- Erste Bausteine sind `Button` (ohne Client-Direktive) und `TextField` (mit `"use client"`). Damit ist die Clientgrenze nach dem Build in einer echten Probe geprüft.
+- Erste Bausteine sind `Button` und `TextField` (beide ohne Client-Direktive, auch in Server Components nutzbar) sowie `ColorField` (mit `"use client"`, von der Vorschau für Basisfarben benötigt). An `ColorField` ist die Clientgrenze nach dem Build in einer echten Probe geprüft. Ursprünglich sollte das `TextField` sein, es braucht aber nur `useId`, und das ist in Server Components erlaubt.
 - Die Konsumentenabnahme läuft in Next.js und Vite, jeweils Produktionsbuild und Browser-Smoke, dazu publint und Are the Types Wrong.
 - Die Vorschau startet über einen eigenen Launcher mit festem Port, Readiness-Prüfung und Aufräumen der eigenen Prozesse.
 - CI prüft Formatierung, Lint, Typen, Tests, Builds und Konsumenten.

@@ -15,15 +15,31 @@
   ],
   "scripts": {
     "doctor": "node scripts/doctor.mjs",
+    "start": "node scripts/dev.mjs",
+    "dev": "node scripts/dev.mjs",
+    "preview": "node scripts/serve.mjs",
     "format": "npm run format:web && npm run format:docs",
     "format:web": "biome format --write .",
     "format:docs": "prettier --write \"**/*.{md,yml,yaml,html}\"",
     "check:format": "npm run check:format:web && npm run check:format:docs",
     "check:format:web": "biome format .",
-    "check:format:docs": "prettier --check \"**/*.{md,yml,yaml,html}\""
+    "check:format:docs": "prettier --check \"**/*.{md,yml,yaml,html}\"",
+    "lint": "biome lint .",
+    "typecheck": "npm run typecheck -w @tim3399/mosaik && npm run build -w @tim3399/mosaik && npm run typecheck -w mosaik-showcase",
+    "check": "npm run check:format && npm run lint && npm run typecheck",
+    "build": "npm run build -w @tim3399/mosaik && npm run build -w mosaik-showcase",
+    "test": "npm run test -w @tim3399/mosaik",
+    "test:e2e": "playwright test --config tests/browser/playwright.config.ts",
+    "test:package": "node tests/package-consumer/run.mjs",
+    "test:launcher": "node --test tests/launcher/launcher.test.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@arethetypeswrong/cli": "0.18.5",
     "@biomejs/biome": "2.5.14",
-    "prettier": "3.9.7"
+    "@playwright/test": "1.63.0",
+    "prettier": "3.9.7",
+    "publint": "0.3.24",
+    "typescript": "7.0.2"
   }
 }

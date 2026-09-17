@@ -1,0 +1,134 @@
+/*
+ * Foundation tokens.
+ *
+ * PROVISIONAL VALUES: this neutral palette and geometry are placeholders until the design
+ * direction is chosen in AP2. Components depend on the role names, not on these values.
+ *
+ * Light and dark mode: every color token is written as
+ *   var(--_mosaik-light, <light value>) var(--_mosaik-dark, <dark value>)
+ * One of the two private toggles holds `initial` (the fallback applies), the other one is
+ * empty (it disappears). Tokens are declared again on every mode scope, so they resolve per
+ * subtree. This replaces light-dark(), which consumer bundlers such as Next.js rewrite into a
+ * variant that is resolved only at :root and breaks nested scopes.
+ *
+ * Without a scope, components render in light mode. data-mosaik-mode="light" | "dark" |
+ * "system" on any container selects the mode for its subtree and sets color-scheme there.
+ */
+@layer mosaik.foundations {
+  :root,
+  [data-mosaik-mode] {
+    /* Neutral surfaces and text. Contrast pairs are checked in tokens.test.ts. */
+    --mosaik-color-canvas: var(--_mosaik-light, #f5f5f6) var(--_mosaik-dark, #0f0f11);
+    --mosaik-color-surface: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #18181b);
+    --mosaik-color-field: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #111114);
+    --mosaik-color-text: var(--_mosaik-light, #18181b) var(--_mosaik-dark, #f4f4f5);
+    --mosaik-color-text-muted: var(--_mosaik-light, #52525b) var(--_mosaik-dark, #a1a1aa);
+    --mosaik-color-border: var(--_mosaik-light, #e4e4e7) var(--_mosaik-dark, #27272a);
+    --mosaik-color-border-strong: var(--_mosaik-light, #71717a) var(--_mosaik-dark, #71717a);
+    --mosaik-color-subtle-hover: var(--_mosaik-light, #f4f4f5) var(--_mosaik-dark, #27272a);
+    --mosaik-color-subtle-active: var(--_mosaik-light, #e4e4e7) var(--_mosaik-dark, #3f3f46);
+    --mosaik-color-disabled-surface: var(--_mosaik-light, #f4f4f5) var(--_mosaik-dark, #27272a);
+    --mosaik-color-disabled-text: var(--_mosaik-light, #a1a1aa) var(--_mosaik-dark, #52525b);
+
+    /* Functional colors. */
+    --mosaik-color-focus: var(--_mosaik-light, #1d4ed8) var(--_mosaik-dark, #60a5fa);
+    --mosaik-color-danger: var(--_mosaik-light, #b91c1c) var(--_mosaik-dark, #f87171);
+
+    /* Default accent for emphasized actions until components accept base colors (AP2). */
+    --mosaik-accent-solid: var(--_mosaik-light, #18181b) var(--_mosaik-dark, #f4f4f5);
+    --mosaik-accent-solid-hover: var(--_mosaik-light, #3f3f46) var(--_mosaik-dark, #d4d4d8);
+    --mosaik-accent-solid-active: var(--_mosaik-light, #09090b) var(--_mosaik-dark, #ffffff);
+    --mosaik-accent-on-solid: var(--_mosaik-light, #fafafa) var(--_mosaik-dark, #18181b);
+
+    /* Typography: font stacks and named text roles (size, line height, weight). */
+    --mosaik-font-family:
+      system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mosaik-font-family-mono:
+      ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas, "Liberation Mono", monospace;
+    --mosaik-text-body-size: 1rem;
+    --mosaik-text-body-line: 1.5;
+    --mosaik-text-body-weight: 400;
+    --mosaik-text-control-size: 0.9375rem;
+    --mosaik-text-control-line: 1.25;
+    --mosaik-text-control-weight: 500;
+    --mosaik-text-label-size: 0.875rem;
+    --mosaik-text-label-line: 1.4;
+    --mosaik-text-label-weight: 500;
+    --mosaik-text-meta-size: 0.8125rem;
+    --mosaik-text-meta-line: 1.4;
+    --mosaik-text-meta-weight: 400;
+
+    /* Spacing roles: a small rhythm instead of a full numeric scale. */
+    --mosaik-spacing-optical: 0.25rem;
+    --mosaik-spacing-compact: 0.5rem;
+    --mosaik-spacing-regular: 1rem;
+    --mosaik-spacing-section: 2rem;
+
+    /* Geometry and interaction. */
+    --mosaik-size-control: 2.5rem;
+    --mosaik-radius-control: 0.375rem;
+    --mosaik-radius-surface: 0.75rem;
+    --mosaik-border-width: 1px;
+    --mosaik-focus-ring-width: 2px;
+    --mosaik-focus-ring-offset: 2px;
+    --mosaik-duration-fast: 120ms;
+  }
+
+  /* Touch pointers get larger hit areas (WCAG minimum is 24px; the comfort target is 44px). */
+  @media (pointer: coarse) {
+    :root,
+    [data-mosaik-mode] {
+      --mosaik-size-control: 2.75rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root,
+    [data-mosaik-mode] {
+      --mosaik-duration-fast: 0ms;
+    }
+  }
+
+  /* Mode toggles. Later rules win at equal specificity, so a scope on <html> overrides :root. */
+  :root {
+    --_mosaik-light: initial;
+    --_mosaik-dark: ;
+  }
+
+  [data-mosaik-mode="light"] {
+    --_mosaik-light: initial;
+    --_mosaik-dark: ;
+    color-scheme: light;
+  }
+
+  [data-mosaik-mode="dark"] {
+    --_mosaik-light: ;
+    --_mosaik-dark: initial;
+    color-scheme: dark;
+  }
+
+  [data-mosaik-mode="system"] {
+    --_mosaik-light: initial;
+    --_mosaik-dark: ;
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-mosaik-mode="system"] {
+      --_mosaik-light: ;
+      --_mosaik-dark: initial;
+    }
+  }
+
+  .mosaik-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}
