@@ -6,6 +6,23 @@ import { describe, expect, it } from "vitest";
 const srcDir = join(dirname(fileURLToPath(import.meta.url)), "..");
 const tokensCss = readFileSync(join(srcDir, "foundations", "tokens.css"), "utf8");
 
+// AP2 design checkpoint: the candidate design directions live outside the library and set other
+// values for the same token roles. The contrast checks run against each of them as well.
+const directionsDir = join(srcDir, "..", "..", "..", "explorations", "design-directions");
+const directionSources = readdirSync(join(directionsDir, "directions"))
+  .filter((file) => file.endsWith(".css"))
+  .sort()
+  .map((file): [source: string, css: string] => [
+    `direction ${file}`,
+    readFileSync(join(directionsDir, "directions", file), "utf8"),
+  ]);
+const tokenSources: Array<[source: string, css: string]> = [
+  ["tokens.css", tokensCss],
+  ...directionSources,
+];
+
+const stripComments = (css: string) => css.replace(/\/\*[\s\S]*?\*\//g, "");
+
 type Mode = "light" | "dark";
 
 /** Reads `--name: var(--_mosaik-light, #light) var(--_mosaik-dark, #dark)` declarations. */
@@ -35,8 +52,6 @@ function contrastRatio(foreground: string, background: string): number {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
-const colorTokens = readColorTokens(tokensCss);
-
 // Pairs that components actually render together. WCAG 2.2 AA: 4.5:1 for text,
 // 3:1 for essential non-text indicators such as field borders and focus rings.
 const requiredContrast: Array<[foreground: string, background: string, minimum: number]> = [
@@ -62,11 +77,13 @@ const requiredContrast: Array<[foreground: string, background: string, minimum: 
   ["--mosaik-accent-on-solid", "--mosaik-accent-solid-active", 4.5],
 ];
 
-describe("foundation color tokens", () => {
+describe.each(tokenSources)("foundation color tokens: %s", (_source, css) => {
+  const colorTokens = readColorTokens(css);
+
   it("writes every color token in the scoped toggle form, never with light-dark()", () => {
     // light-dark() gets rewritten by consumer bundlers into a variant that breaks nested scopes.
-    expect(tokensCss.replace(/\/\*[\s\S]*?\*\//g, "")).not.toMatch(/light-dark\(/);
-    const colorDeclarations = tokensCss.match(/--mosaik-(?:color|accent)-[a-z-]+\s*:/g) ?? [];
+    expect(stripComments(css)).not.toMatch(/light-dark\(/);
+    const colorDeclarations = css.match(/--mosaik-(?:color|accent)-[a-z-]+\s*:/g) ?? [];
     expect(colorDeclarations.length).toBeGreaterThan(0);
     expect(colorTokens.size).toBe(colorDeclarations.length);
   });
@@ -80,6 +97,27 @@ describe("foundation color tokens", () => {
       expect(contrastRatio(fg?.[mode] ?? "", bg?.[mode] ?? "")).toBeGreaterThanOrEqual(min);
     });
   }
+});
+
+describe("design directions (AP2 checkpoint)", () => {
+  /** Declared custom property names, including the private mode toggles. */
+  const declaredNames = (css: string) =>
+    [...new Set([...stripComments(css).matchAll(/(--_?mosaik-[a-z0-9-]+)\s*:/g)].map((m) => m[1]))]
+      .filter((name): name is string => name !== undefined)
+      .sort();
+  const libraryRoles = declaredNames(tokensCss).filter((name) => !name.startsWith("--_"));
+
+  it("offers two or three directions", () => {
+    expect(directionSources.length).toBeGreaterThanOrEqual(2);
+    expect(directionSources.length).toBeLessThanOrEqual(3);
+  });
+
+  it.each(directionSources)(
+    "%s sets values for exactly the library's roles and leaves the mode toggles alone",
+    (_source, css) => {
+      expect(declaredNames(css)).toEqual(libraryRoles);
+    },
+  );
 });
 
 describe("stylesheet contract", () => {
