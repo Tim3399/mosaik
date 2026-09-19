@@ -7,14 +7,37 @@ or the showcase. After the choice it is removed; only the decision is recorded i
 
 Round 1 (three token-only directions) was rejected as too generic, round 2 (five concepts from
 awwwards motifs) as neither clean nor original enough. Round 3 starts from five sites the owner
-named as references and translates what they share into component styling: typography as the
-main element, restraint instead of decoration, precise small details and a clear geometry.
+named as references. Its first form, a specimen page per direction, still only took their colors
+and type, so the directions are now shown as **screens**: pages of a small download tool
+composed like the references, with the real package components inside. The specimen pages stay
+as the state matrix of each direction.
 
 | Direction   | Character                                                                   | References                   |
 | ----------- | --------------------------------------------------------------------------- | ---------------------------- |
 | A Grundriss | Swiss precision: charcoal and white, gray, rules, square, arrow, text links | M3 Planungsgruppe            |
 | B Kern      | Black stage with columns: thin and heavy type, bone, mono labels, amber     | DAQ Consulting, Boon Global  |
 | C Orbit     | Deep indigo and lavender: violet pills, cards with one large corner, status | Orchid Security, Cyber Prime |
+
+## Screens
+
+`screens.mjs` renders one screen per direction to `.tmp/design-directions/screens/` and captures
+the first desktop screen (1440 × 900), the full desktop page and a 390 px phone page:
+
+- **A Grundriss:** label column, a three-line statement at poster scale, three columns under
+  rules, the queue as vertical tabs with large gray numbers, bars as progress, a charcoal end
+  with a wordmark.
+- **B Kern:** a liquid-chrome hero drawn with SVG filters, thin and heavy capitals, monospaced
+  micro text, a glass panel with the form, dot rows as progress, a particle field with an amber
+  highlight.
+- **C Orbit:** a pill navigation and centered headline over violet light, then a small operating
+  system with app tiles, windows with one large corner, a status table, a notice and a dock.
+
+The graphics are generated (bars, chrome, particles, icons); no image or icon is copied from the
+references, and the copy is written for mosaik.
+
+```bash
+node explorations/design-directions/screens.mjs
+```
 
 ## Rules
 
