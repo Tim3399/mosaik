@@ -1,0 +1,190 @@
+/*
+ * Direction A "Grundriss", after M3 Planungsgruppe: Swiss precision on white. Charcoal type,
+ * gray for what can wait, rules instead of boxes, square controls, one arrow on the primary
+ * action and underlined text for secondary actions. Dark mode is the charcoal of M3's footer.
+ *
+ * AP2 exploration, not part of the library. The first block sets every library token role
+ * (color tokens in the toggle form of decisions D-15); --dd-* properties belong to this
+ * direction. The rules below restyle the rendered components for the prototype only.
+ */
+:root,
+[data-mosaik-mode] {
+  --mosaik-color-canvas: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #222222);
+  --mosaik-color-surface: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #222222);
+  --mosaik-color-field: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #2a2a2a);
+  --mosaik-color-text: var(--_mosaik-light, #222222) var(--_mosaik-dark, #ffffff);
+  --mosaik-color-text-muted: var(--_mosaik-light, #6b6b6b) var(--_mosaik-dark, #a3a3a3);
+  --mosaik-color-border: var(--_mosaik-light, #e3e3e3) var(--_mosaik-dark, #3a3a3a);
+  --mosaik-color-border-strong: var(--_mosaik-light, #222222) var(--_mosaik-dark, #bdbdbd);
+  --mosaik-color-subtle-hover: var(--_mosaik-light, #f2f2f2) var(--_mosaik-dark, #2e2e2e);
+  --mosaik-color-subtle-active: var(--_mosaik-light, #e6e6e6) var(--_mosaik-dark, #3a3a3a);
+  --mosaik-color-disabled-surface: var(--_mosaik-light, #f5f5f5) var(--_mosaik-dark, #2a2a2a);
+  --mosaik-color-disabled-text: var(--_mosaik-light, #a6a6a6) var(--_mosaik-dark, #6b6b6b);
+  --mosaik-color-focus: var(--_mosaik-light, #222222) var(--_mosaik-dark, #ffffff);
+  --mosaik-color-danger: var(--_mosaik-light, #c8231b) var(--_mosaik-dark, #ff7b72);
+  --mosaik-accent-solid: var(--_mosaik-light, #222222) var(--_mosaik-dark, #ffffff);
+  --mosaik-accent-solid-hover: var(--_mosaik-light, #000000) var(--_mosaik-dark, #e6e6e6);
+  --mosaik-accent-solid-active: var(--_mosaik-light, #3a3a3a) var(--_mosaik-dark, #cfcfcf);
+  --mosaik-accent-on-solid: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #222222);
+
+  --mosaik-font-family: "Inter", system-ui, sans-serif;
+  --mosaik-font-family-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  --mosaik-text-body-size: 1rem;
+  --mosaik-text-body-line: 1.5;
+  --mosaik-text-body-weight: 400;
+  --mosaik-text-control-size: 0.9375rem;
+  --mosaik-text-control-line: 1.2;
+  --mosaik-text-control-weight: 500;
+  --mosaik-text-label-size: 0.875rem;
+  --mosaik-text-label-line: 1.3;
+  --mosaik-text-label-weight: 500;
+  --mosaik-text-meta-size: 0.875rem;
+  --mosaik-text-meta-line: 1.45;
+  --mosaik-text-meta-weight: 400;
+
+  --mosaik-spacing-optical: 0.25rem;
+  --mosaik-spacing-compact: 0.5rem;
+  --mosaik-spacing-regular: 1.25rem;
+  --mosaik-spacing-section: 4rem;
+
+  --mosaik-size-control: 2.75rem;
+  --mosaik-radius-control: 0;
+  --mosaik-radius-surface: 0;
+  --mosaik-border-width: 1px;
+  --mosaik-focus-ring-width: 2px;
+  --mosaik-focus-ring-offset: 2px;
+  --mosaik-duration-fast: 120ms;
+
+  --dd-display: "Inter Tight", "Inter", system-ui, sans-serif;
+  --dd-gray: var(--_mosaik-light, #8c8c8c) var(--_mosaik-dark, #8c8c8c);
+}
+
+@media (pointer: coarse) {
+  :root,
+  [data-mosaik-mode] {
+    --mosaik-size-control: 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-mosaik-mode] {
+    --mosaik-duration-fast: 0ms;
+  }
+}
+
+/* Components -------------------------------------------------------------------------- */
+
+.mosaik-button {
+  padding-inline: 1.25rem;
+  letter-spacing: -0.005em;
+}
+
+.mosaik-button[data-variant="primary"]::after {
+  content: "→" / "";
+  margin-inline-start: 0.75em;
+}
+
+.mosaik-button[data-variant="secondary"] {
+  padding-inline: 0.25rem;
+  border-color: transparent;
+  background-color: transparent;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.3em;
+}
+
+.mosaik-button[data-variant="secondary"]:hover:not(:disabled),
+.mosaik-button[data-variant="secondary"]:active:not(:disabled) {
+  background-color: transparent;
+  text-decoration-thickness: 3px;
+}
+
+.mosaik-button[data-variant="secondary"]:active:not(:disabled) {
+  color: var(--mosaik-color-text-muted);
+}
+
+.mosaik-button[data-variant="secondary"]:disabled {
+  background-color: transparent;
+}
+
+.mosaik-color-field__picker {
+  height: auto;
+}
+
+/* Page ------------------------------------------------------------------------------- */
+
+.dd-kicker,
+.dd-number,
+.dd-caption {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--mosaik-color-text-muted);
+}
+
+.dd-nav {
+  font-size: 0.9375rem;
+}
+
+.dd-nav a {
+  text-decoration: none;
+}
+
+.dd-nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.3em;
+}
+
+.dd-title,
+.dd-block-title,
+.dd-form-title,
+.dd-fact dt {
+  font-family: var(--dd-display);
+}
+
+.dd-title {
+  font-size: clamp(3rem, 8.5vw, 8rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.dd-title-quiet {
+  color: var(--dd-gray);
+}
+
+.dd-summary {
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--mosaik-color-text-muted);
+}
+
+.dd-block {
+  padding-top: var(--mosaik-spacing-regular);
+  border-top: 1px solid var(--mosaik-color-border-strong);
+}
+
+.dd-block-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.dd-form-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.dd-fact dt {
+  padding-bottom: var(--mosaik-spacing-compact);
+  border-bottom: 1px solid var(--mosaik-color-border-strong);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}

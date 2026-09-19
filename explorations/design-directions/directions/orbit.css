@@ -1,0 +1,216 @@
+/*
+ * Direction C "Orbit", after Orchid Security and Cyber Prime: deep indigo with a soft violet
+ * light. Pill buttons, a light secondary pill, calm cards with one large rounded corner, a
+ * violet focus and a status dot. Light mode is a pale lavender page with the same violet.
+ *
+ * AP2 exploration, not part of the library. The first block sets every library token role
+ * (color tokens in the toggle form of decisions D-15); --dd-* properties belong to this
+ * direction. The rules below restyle the rendered components for the prototype only.
+ */
+:root,
+[data-mosaik-mode] {
+  --mosaik-color-canvas: var(--_mosaik-light, #f5f4fb) var(--_mosaik-dark, #0b0a1d);
+  --mosaik-color-surface: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #141230);
+  --mosaik-color-field: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #0f0e25);
+  --mosaik-color-text: var(--_mosaik-light, #15132e) var(--_mosaik-dark, #f1f0fa);
+  --mosaik-color-text-muted: var(--_mosaik-light, #5d5a7a) var(--_mosaik-dark, #a09cc0);
+  --mosaik-color-border: var(--_mosaik-light, #e4e2f0) var(--_mosaik-dark, #262347);
+  --mosaik-color-border-strong: var(--_mosaik-light, #8a87a8) var(--_mosaik-dark, #6b67a0);
+  --mosaik-color-subtle-hover: var(--_mosaik-light, #f0eefa) var(--_mosaik-dark, #1c1a3d);
+  --mosaik-color-subtle-active: var(--_mosaik-light, #e6e3f7) var(--_mosaik-dark, #25224d);
+  --mosaik-color-disabled-surface: var(--_mosaik-light, #efeef6) var(--_mosaik-dark, #17152f);
+  --mosaik-color-disabled-text: var(--_mosaik-light, #a9a6c2) var(--_mosaik-dark, #4f4b75);
+  --mosaik-color-focus: var(--_mosaik-light, #6a48f5) var(--_mosaik-dark, #a893ff);
+  --mosaik-color-danger: var(--_mosaik-light, #c8263a) var(--_mosaik-dark, #ff7a8a);
+  --mosaik-accent-solid: var(--_mosaik-light, #6a48f5) var(--_mosaik-dark, #6a48f5);
+  --mosaik-accent-solid-hover: var(--_mosaik-light, #5a38e0) var(--_mosaik-dark, #5a38e0);
+  --mosaik-accent-solid-active: var(--_mosaik-light, #4b2cc7) var(--_mosaik-dark, #4b2cc7);
+  --mosaik-accent-on-solid: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #ffffff);
+
+  --mosaik-font-family: "Geist", system-ui, sans-serif;
+  --mosaik-font-family-mono: "Geist Mono", ui-monospace, monospace;
+  --mosaik-text-body-size: 1rem;
+  --mosaik-text-body-line: 1.55;
+  --mosaik-text-body-weight: 400;
+  --mosaik-text-control-size: 0.9375rem;
+  --mosaik-text-control-line: 1.2;
+  --mosaik-text-control-weight: 500;
+  --mosaik-text-label-size: 0.875rem;
+  --mosaik-text-label-line: 1.3;
+  --mosaik-text-label-weight: 500;
+  --mosaik-text-meta-size: 0.875rem;
+  --mosaik-text-meta-line: 1.45;
+  --mosaik-text-meta-weight: 400;
+
+  --mosaik-spacing-optical: 0.25rem;
+  --mosaik-spacing-compact: 0.5rem;
+  --mosaik-spacing-regular: 1.25rem;
+  --mosaik-spacing-section: 3.5rem;
+
+  --mosaik-size-control: 2.75rem;
+  --mosaik-radius-control: 0.875rem;
+  --mosaik-radius-surface: 1.25rem;
+  --mosaik-border-width: 1px;
+  --mosaik-focus-ring-width: 2px;
+  --mosaik-focus-ring-offset: 2px;
+  --mosaik-duration-fast: 140ms;
+
+  --dd-corner: 3rem;
+  --dd-secondary-bg: var(--_mosaik-light, #ffffff) var(--_mosaik-dark, #e9e7f5);
+  --dd-secondary-bg-hover: var(--_mosaik-light, #f0eefa) var(--_mosaik-dark, #ffffff);
+  --dd-secondary-text: #15132e;
+  --dd-glow: var(--_mosaik-light, #7c5cff29) var(--_mosaik-dark, #5b3dff4d);
+  --dd-halo: var(--_mosaik-light, #6a48f540) var(--_mosaik-dark, #a893ff40);
+  --dd-online: var(--_mosaik-light, #0f8a5f) var(--_mosaik-dark, #3ddc97);
+}
+
+@media (pointer: coarse) {
+  :root,
+  [data-mosaik-mode] {
+    --mosaik-size-control: 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-mosaik-mode] {
+    --mosaik-duration-fast: 0ms;
+  }
+}
+
+/* Components -------------------------------------------------------------------------- */
+
+.mosaik-button {
+  padding-inline: 1.5rem;
+  border-radius: 999px;
+  transition-property: background-color, border-color, color, box-shadow;
+}
+
+.mosaik-button[data-variant="primary"] {
+  box-shadow:
+    inset 0 1px 0 #ffffff33,
+    0 10px 24px -12px var(--mosaik-accent-solid);
+}
+
+.mosaik-button[data-variant="secondary"] {
+  border-color: transparent;
+  background-color: var(--dd-secondary-bg);
+  color: var(--dd-secondary-text);
+  box-shadow: inset 0 0 0 1px var(--mosaik-color-border);
+}
+
+.mosaik-button[data-variant="secondary"]:hover:not(:disabled),
+.mosaik-button[data-variant="secondary"]:active:not(:disabled) {
+  background-color: var(--dd-secondary-bg-hover);
+}
+
+.mosaik-button[data-variant="secondary"]:active:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--mosaik-color-border-strong);
+}
+
+.mosaik-button:disabled,
+.mosaik-button[data-variant="secondary"]:disabled {
+  background-color: var(--mosaik-color-disabled-surface);
+  color: var(--mosaik-color-disabled-text);
+  box-shadow: none;
+}
+
+.mosaik-text-field__input:focus-visible,
+.mosaik-color-field__input:focus-visible,
+.mosaik-color-field__picker:focus-visible {
+  border-color: var(--mosaik-color-focus);
+  box-shadow: 0 0 0 5px var(--dd-halo);
+}
+
+.mosaik-color-field__picker {
+  height: auto;
+  border-radius: 999px;
+}
+
+/* Page ------------------------------------------------------------------------------- */
+
+.dd-body {
+  background-image: radial-gradient(60rem 36rem at 75% -8rem, var(--dd-glow), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+.dd-kicker,
+.dd-number,
+.dd-caption,
+.dd-fact dt {
+  font-family: var(--mosaik-font-family-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--mosaik-color-text-muted);
+}
+
+.dd-kicker::before {
+  content: "" / "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-inline-end: 0.6em;
+  border-radius: 50%;
+  background-color: var(--dd-online);
+  box-shadow: 0 0 10px var(--dd-online);
+}
+
+.dd-nav {
+  gap: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.dd-nav a {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--mosaik-color-border);
+  text-decoration: none;
+}
+
+.dd-nav a[aria-current="page"] {
+  background-color: var(--mosaik-accent-solid);
+  color: var(--mosaik-accent-on-solid);
+}
+
+.dd-title {
+  font-size: clamp(3rem, 7.5vw, 6.75rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.dd-title-quiet {
+  font-weight: 300;
+  color: var(--mosaik-color-text-muted);
+}
+
+.dd-title-mark {
+  color: var(--mosaik-color-focus);
+}
+
+.dd-summary {
+  font-size: 1.25rem;
+  line-height: 1.45;
+  color: var(--mosaik-color-text-muted);
+}
+
+.dd-block-title {
+  font-size: 1.625rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.dd-form-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.dd-block-body {
+  padding: var(--mosaik-spacing-regular);
+  border: 1px solid var(--mosaik-color-border);
+  border-radius: var(--mosaik-radius-surface) var(--mosaik-radius-surface) var(--dd-corner)
+    var(--mosaik-radius-surface);
+  background-color: var(--mosaik-color-surface);
+}

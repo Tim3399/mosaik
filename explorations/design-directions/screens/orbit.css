@@ -1,0 +1,495 @@
+/*
+ * Screen C "Orbit", composed after Orchid Security and Cyber Prime: an indigo page with violet
+ * light, a pill navigation and centered headline, and below it a small operating system:
+ * system bar, app tiles with a folded corner, windows with one large corner, a status table,
+ * a violet notice and a dock. AP2 exploration, not part of the library.
+ */
+.s-body {
+  margin: 0;
+  background-color: #0b0a1d;
+  color: var(--mosaik-color-text);
+  font-family: var(--mosaik-font-family);
+}
+
+.c-page {
+  --c-line: #ffffff1c;
+  --c-soft: #c9c6e0;
+  --c-cream: #efe9dc;
+  --c-ink: #15132e;
+  --c-violet: #6a48f5;
+  --c-violet-light: #a893ff;
+  --c-glass: #17153acc;
+  min-height: 100vh;
+  padding-bottom: 48px;
+  background:
+    radial-gradient(56rem 30rem at 50% -8rem, #6a48f559, transparent 70%),
+    radial-gradient(40rem 30rem at 92% 58%, #2f4bff1f, transparent 70%),
+    radial-gradient(34rem 26rem at 4% 70%, #6a48f51a, transparent 70%), #0b0a1d;
+}
+
+.c-page .mosaik-button {
+  padding-inline: 1.375rem;
+}
+
+/* Header */
+.c-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 84px;
+  padding: 0 28px;
+}
+
+.c-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.625rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.c-logo-mark {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px 7px 14px 7px;
+  background: linear-gradient(135deg, #8f6bff, #3a5bff);
+}
+
+.c-nav {
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+}
+
+.c-nav a {
+  padding: 9px 20px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #dcdaf0;
+  text-decoration: none;
+}
+
+.c-nav a[aria-current="page"] {
+  background-color: #ffffff12;
+  color: #ffffff;
+}
+
+.c-header-end {
+  justify-self: end;
+  display: flex;
+  gap: 10px;
+}
+
+/* Hero */
+.c-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 44px 24px 0;
+  text-align: center;
+}
+
+.c-chip {
+  margin: 0;
+  padding: 8px 18px;
+  border: 1px solid #8f6bff;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #6a48f533, #6a48f511);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.c-title {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+.c-lead {
+  max-width: 40rem;
+  margin: 0;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  color: var(--c-soft);
+}
+
+.c-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+/* Desktop */
+.c-desktop {
+  position: relative;
+  height: 680px;
+  margin: 56px 28px 0;
+  border: 1px solid var(--c-line);
+  border-radius: 28px;
+  background:
+    radial-gradient(30rem 20rem at 30% 20%, #6a48f51f, transparent 70%),
+    linear-gradient(180deg, #121030, #0d0b24);
+  overflow: hidden;
+}
+
+.c-system {
+  display: flex;
+  gap: 28px;
+  margin: 0;
+  padding: 11px 20px;
+  border-bottom: 1px solid var(--c-line);
+  font-family: var(--mosaik-font-family-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #b6b3d2;
+}
+
+.c-online::before {
+  content: "" / "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-inline-end: 9px;
+  border-radius: 50%;
+  background-color: #3ddc97;
+  box-shadow: 0 0 10px #3ddc97;
+}
+
+.c-apps {
+  position: absolute;
+  top: 64px;
+  left: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.c-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 104px;
+}
+
+.c-app-tile,
+.c-dock-item {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(225deg, transparent 12px, #cfc6b3 12px 18px, var(--c-cream) 18px);
+  clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 0 100%);
+}
+
+.c-app-tile svg,
+.c-dock-item svg {
+  width: 34px;
+  height: 34px;
+  fill: var(--c-ink);
+  stroke: var(--c-ink);
+}
+
+.c-app-tile svg [data-accent],
+.c-dock-item svg [data-accent] {
+  fill: var(--c-violet);
+  stroke: var(--c-violet);
+}
+
+.c-app-tile svg [fill="none"],
+.c-dock-item svg [fill="none"] {
+  fill: none;
+}
+
+.c-app-label {
+  font-family: var(--mosaik-font-family-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
+  color: #e9e7f5;
+}
+
+/* Windows */
+.c-window {
+  position: absolute;
+  margin: 0;
+  border: 1px solid var(--c-line);
+  border-radius: 18px 18px 56px 18px;
+  background-color: var(--c-glass);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 40px 80px -40px #000000;
+}
+
+.c-window-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.c-window-title,
+.c-window-meta {
+  font-family: var(--mosaik-font-family-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.c-window-title {
+  color: #ffffff;
+}
+
+.c-window-meta {
+  color: #a09cc0;
+}
+
+.c-window-controls {
+  display: flex;
+  gap: 7px;
+}
+
+.c-window-controls i {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #ffffff4d;
+  border-radius: 50%;
+}
+
+.c-window-form {
+  top: 66px;
+  left: 168px;
+  width: 440px;
+  z-index: 2;
+}
+
+.c-window-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px 30px;
+}
+
+.c-window-body .s-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.c-window-queue {
+  top: 66px;
+  left: 640px;
+  right: 28px;
+  z-index: 1;
+}
+
+.c-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.c-table th {
+  padding: 12px 18px;
+  font-family: var(--mosaik-font-family-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #a09cc0;
+}
+
+.c-table td {
+  padding: 13px 18px;
+  border-top: 1px solid var(--c-line);
+  color: #f1f0fa;
+}
+
+.c-size {
+  font-family: var(--mosaik-font-family-mono);
+  font-size: 0.8125rem;
+  color: #c9c6e0;
+}
+
+.c-status {
+  display: inline-block;
+  padding: 2px 9px;
+  border: 1px solid currentcolor;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.c-status[data-tone="active"] {
+  color: var(--c-violet-light);
+}
+
+.c-status[data-tone="done"] {
+  color: #3ddc97;
+}
+
+.c-status[data-tone="waiting"] {
+  color: #a09cc0;
+}
+
+.c-status[data-tone="error"] {
+  color: #ff7a8a;
+}
+
+.c-progress {
+  display: block;
+  width: 120px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: #ffffff17;
+}
+
+.c-progress span {
+  display: block;
+  width: var(--c-progress);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8f6bff, #3a5bff);
+}
+
+.c-toast {
+  position: absolute;
+  right: 40px;
+  bottom: 24px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 330px;
+  padding: 24px 26px 18px;
+  border-radius: 4px 4px 48px 4px;
+  background-color: var(--c-violet);
+  color: #ffffff;
+  box-shadow: 0 30px 60px -30px #6a48f5;
+}
+
+.c-toast p {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.45;
+}
+
+.c-toast-hint {
+  align-self: center;
+  font-family: var(--mosaik-font-family-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.c-dock {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  z-index: 4;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--c-line);
+  border-radius: 22px;
+  background-color: #0e0c24d9;
+  backdrop-filter: blur(12px);
+  transform: translateX(-50%);
+}
+
+.c-dock-item {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.c-dock-item svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* Narrow screens */
+@media (max-width: 60rem) {
+  .c-header {
+    grid-template-columns: 1fr auto;
+    height: 72px;
+    padding: 0 18px;
+  }
+
+  .c-nav,
+  .c-header-end .mosaik-button[data-variant="primary"] {
+    display: none;
+  }
+
+  .c-hero {
+    padding-top: 28px;
+  }
+
+  .c-desktop {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    height: auto;
+    margin: 40px 12px 0;
+    padding-bottom: 18px;
+  }
+
+  .c-system {
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  .c-apps {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 0 12px;
+  }
+
+  .c-app {
+    width: auto;
+  }
+
+  .c-window,
+  .c-toast,
+  .c-dock {
+    position: static;
+    width: auto;
+    margin: 0 12px;
+    transform: none;
+  }
+
+  .c-table th:nth-child(3),
+  .c-table td:nth-child(3),
+  .c-table th:nth-child(4),
+  .c-table td:nth-child(4) {
+    display: none;
+  }
+
+  .c-dock {
+    align-self: center;
+  }
+}

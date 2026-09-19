@@ -1,0 +1,157 @@
+/*
+ * Shared structure of the AP2 direction pages: layout only. Exploration code, not part of the
+ * library. Each direction stylesheet loads after this file and gives the page its look.
+ * Sections put a label column (number, title, note) beside the content, as in the owner's
+ * references. Components receive outer layout through className, as the contract allows.
+ */
+.dd-body {
+  margin: 0;
+  background-color: var(--mosaik-color-canvas);
+  color: var(--mosaik-color-text);
+  font-family: var(--mosaik-font-family);
+  font-size: var(--mosaik-text-body-size);
+  line-height: var(--mosaik-text-body-line);
+}
+
+.dd-page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mosaik-spacing-section);
+  max-width: 88rem;
+  margin-inline: auto;
+  padding: var(--mosaik-spacing-section) var(--mosaik-spacing-regular);
+}
+
+.dd-hero,
+.dd-block {
+  display: grid;
+  gap: var(--mosaik-spacing-regular);
+  min-width: 0;
+}
+
+.dd-hero-meta,
+.dd-hero-main,
+.dd-block-label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mosaik-spacing-compact);
+  min-width: 0;
+}
+
+.dd-hero-main {
+  gap: var(--mosaik-spacing-regular);
+}
+
+.dd-hero-art {
+  display: none;
+}
+
+.dd-title,
+.dd-block-title,
+.dd-form-title,
+.dd-summary,
+.dd-note,
+.dd-caption,
+.dd-kicker,
+.dd-number {
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.dd-title-quiet,
+.dd-title-loud {
+  display: block;
+}
+
+.dd-summary {
+  max-width: 56ch;
+}
+
+.dd-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--mosaik-spacing-compact) var(--mosaik-spacing-regular);
+}
+
+.dd-nav a {
+  color: inherit;
+}
+
+.dd-nav a:focus-visible {
+  outline: var(--mosaik-focus-ring-width) solid var(--mosaik-color-focus);
+  outline-offset: var(--mosaik-focus-ring-offset);
+}
+
+.dd-block-body {
+  min-width: 0;
+}
+
+.dd-scenario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mosaik-spacing-regular);
+  max-width: 32rem;
+  margin: 0;
+}
+
+.dd-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--mosaik-spacing-regular) var(--mosaik-spacing-section);
+  margin: 0;
+}
+
+.dd-fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mosaik-spacing-compact);
+  min-width: 0;
+}
+
+.dd-fact dt,
+.dd-fact dd {
+  margin: 0;
+}
+
+.dd-actions,
+.dd-state-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--mosaik-spacing-compact);
+}
+
+.dd-field {
+  flex: 1 1 100%;
+}
+
+.dd-states {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: var(--mosaik-spacing-section) var(--mosaik-spacing-regular);
+}
+
+.dd-state {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mosaik-spacing-compact);
+  min-width: 0;
+}
+
+.dd-index {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mosaik-spacing-compact);
+  margin: 0;
+  padding-inline-start: var(--mosaik-spacing-regular);
+}
+
+@media (min-width: 60rem) {
+  .dd-hero,
+  .dd-block {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    column-gap: var(--mosaik-spacing-section);
+  }
+}
