@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-// Renders the concept pages and takes whole-page screenshots of every concept in light and
+// Renders the direction pages and takes whole-page screenshots of every direction in light and
 // dark mode at 320 px (touch device) and 1440 px (desktop), plus comparison sheets of the
 // scenario form. Hover, pressed and focus are real pseudo-classes forced through the Chrome
 // DevTools Protocol on the rendered elements. Every page is checked with axe while the states
 // are forced and the decorative textures are off; contrast violations fail the run. Chromium only; run
 // "npx playwright install chromium" once. Needs network access for the linked fonts.
-// Usage: node capture.mjs [concept-id ...]   Output: .tmp/design-directions/screenshots/.
+// Usage: node capture.mjs [direction-id ...]   Output: .tmp/design-directions/screenshots/.
 import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -148,7 +148,7 @@ async function composeSheet(browser, screenshotDir, crops, { id, sheetColumns, o
   const cell = (concept, mode) => {
     const crop = crops.find((entry) => entry.concept === concept && entry.mode === mode);
     const source = `data:image/png;base64,${crop.png.toString("base64")}`;
-    return `<figure style="margin:0"><figcaption style="margin-bottom:8px;font-weight:600">${concepts.indexOf(concept) + 1} ${concept.name} · ${mode}</figcaption><img src="${source}" width="${crop.width}" alt=""></figure>`;
+    return `<figure style="margin:0"><figcaption style="margin-bottom:8px;font-weight:600">${concept.letter} ${concept.name} · ${mode}</figcaption><img src="${source}" width="${crop.width}" alt=""></figure>`;
   };
   const cells =
     sheetColumns === "modes"
@@ -156,7 +156,7 @@ async function composeSheet(browser, screenshotDir, crops, { id, sheetColumns, o
       : modes.flatMap((mode) => shown.map((concept) => cell(concept, mode)));
   const columnWidth = Math.max(...crops.map((crop) => crop.width));
   const html = `<!doctype html><html lang="en"><body style="margin:0;padding:${gap}px;background:#bdbdbd;color:#161616;font:14px/1.4 system-ui,sans-serif">
-<h1 style="margin:0 0 ${gap}px;font-size:18px">mosaik AP2 design concepts · scenario at ${id} px</h1>
+<h1 style="margin:0 0 ${gap}px;font-size:18px">mosaik AP2 design directions · scenario at ${id} px</h1>
 <div style="display:grid;grid-template-columns:repeat(${columns},${columnWidth}px);gap:${gap}px;align-items:start">
 ${cells.join("\n")}
 </div></body></html>`;
@@ -238,8 +238,7 @@ try {
         contrastProblems.push(
           ...(await checkAccessibility(page, `${concept.id} ${mode} ${viewport.id}`)),
         );
-        const number = concepts.indexOf(concept) + 1;
-        const name = `${number}-${concept.id}-${mode}-${viewport.id}.png`;
+        const name = `${concept.letter.toLowerCase()}-${concept.id}-${mode}-${viewport.id}.png`;
         await capturePage(page, viewport, { path: join(screenshotDir, name) });
         await session.detach();
         await verifyPointer(page, viewport);

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Renders the AP2 design concepts: one static page per concept and mode. The pages use the
-// public package (@tim3399/mosaik and its styles.css) and load the concept stylesheet unlayered
-// after it. Concepts restyle the components' look for this exploration; component APIs and
-// markup stay unchanged. Every concept shows the same content and states. Fonts are linked from
-// Google Fonts (all SIL OFL) and never copied into the repository. Output goes to
+// Renders the AP2 design directions: one static page per direction and mode. The pages use the
+// public package (@tim3399/mosaik and its styles.css) and load the direction stylesheet
+// unlayered after it. Directions restyle the components' look for this exploration; component
+// APIs and markup stay unchanged. Every direction shows the same content and states. Fonts are
+// linked from Google Fonts (all SIL OFL) and never copied into the repository. Output goes to
 // .tmp/design-directions/, which Git and the formatters ignore. Requires a built package:
 // npm run build -w @tim3399/mosaik.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -18,65 +18,49 @@ export const outputDir = resolve(here, "..", "..", ".tmp", "design-directions");
 
 export const concepts = [
   {
-    id: "riso",
-    name: "Riso",
-    families: ["Bricolage Grotesque", "DM Mono"],
-    fonts: "family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Mono:wght@400;500",
+    id: "grundriss",
+    letter: "A",
+    name: "Grundriss",
+    families: ["Inter Tight", "Inter"],
+    fonts: "family=Inter+Tight:wght@400..800&family=Inter:opsz,wght@14..32,400..700",
     summary:
-      "Two-color risograph print: blue ink on warm paper, a misregistered fluorescent pink layer, halftone dots and paper grain.",
-    motif: "Unseen Studio, Boon Global and Aspen: duotone print, halftone and dithered images.",
+      "Swiss precision: charcoal on white, white on charcoal at night, gray for what can wait, rules instead of boxes, square controls and one arrow.",
+    references: "M3 Planungsgruppe",
+    taken:
+      "Label column beside the content, headlines in charcoal and gray, a rule under every section title, underlined text actions, the charcoal footer as dark mode.",
     signature:
-      "Pink offset under buttons and panels that closes when pressed, halftone for disabled states, a highlighter behind errors, grain on the canvas.",
-    type: "Bricolage Grotesque, DM Mono",
+      "Numbered sections, primary buttons with an arrow, secondary actions as underlined text, focus as a heavier frame.",
+    type: "Inter Tight, Inter",
   },
   {
-    id: "signal",
-    name: "Signal",
-    families: ["Chakra Petch", "JetBrains Mono"],
-    fonts: "family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400..700",
+    id: "kern",
+    letter: "B",
+    name: "Kern",
+    families: ["Inter", "Geist Mono"],
+    fonts: "family=Inter:opsz,wght@14..32,100..900&family=Geist+Mono:wght@400..600",
     summary:
-      "A control room at night: dot grid, signal green, monospaced labels, corner brackets and a glowing focus.",
-    motif: "Cerebrium, Locomotive and basement studio: dark technical stages and glowing signals.",
+      "A black stage with visible columns, bone paper by day: thin and heavy type in one line, monospaced micro labels and a single amber signal.",
+    references: "DAQ Consulting, Boon Global",
+    taken:
+      "Weight contrast in headlines and faint column lines (DAQ), bone type on black and the amber highlight (Boon), mono labels and arrow buttons (both).",
     signature:
-      "Corner brackets on controls and panels, status lights beside labels, hatched offline states, a dot grid with scanlines.",
-    type: "Chakra Petch, JetBrains Mono",
+      "Column grid on the canvas, mono labels, hairline buttons with an arrow, amber only for focus and emphasis.",
+    type: "Inter, Geist Mono",
   },
   {
-    id: "plakat",
-    name: "Plakat",
-    families: ["Big Shoulders Display", "Archivo"],
-    fonts: "family=Big+Shoulders+Display:wght@500..900&family=Archivo:wdth,wght@62..125,400..800",
+    id: "orbit",
+    letter: "C",
+    name: "Orbit",
+    families: ["Geist", "Geist Mono"],
+    fonts: "family=Geist:wght@300..700&family=Geist+Mono:wght@400..600",
     summary:
-      "A street poster: condensed capitals, vermilion and sun yellow on paper, heavy black frames and zigzag bands.",
-    motif: "MONOGRID, Maison AUGE and Malvah: oversized condensed type and op-art stripes.",
+      "Deep indigo at night, pale lavender by day, lit by a soft violet: pill buttons, calm cards with one large rounded corner and a status dot.",
+    references: "Orchid Security, Cyber Prime",
+    taken:
+      "Indigo light, violet pills and the light secondary pill (Orchid), the single large corner of the dialog and mono status labels (Cyber Prime).",
     signature:
-      "Buttons that tilt like pasted posters, error messages as vermilion stickers, black title bands with a zigzag edge.",
-    type: "Big Shoulders Display, Archivo",
-  },
-  {
-    id: "feuilleton",
-    name: "Feuilleton",
-    families: ["Bodoni Moda", "Hanken Grotesk"],
-    fonts:
-      "family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Hanken+Grotesk:wght@400..700",
-    summary:
-      "A quiet magazine page: high-contrast serif, hairlines instead of boxes, underlined fields and one accent, oxblood by day and champagne at night.",
-    motif: "ERA Costa del Sol, Raw Materials and Resn: didone headlines and gallery calm.",
-    signature:
-      "Italic serif labels, underline fields, spaced capitals on buttons, section numbers and double rules.",
-    type: "Bodoni Moda, Hanken Grotesk",
-  },
-  {
-    id: "mosaik",
-    name: "Mosaik",
-    families: ["Unbounded", "Onest"],
-    fonts: "family=Unbounded:wght@400..800&family=Onest:wght@400..700",
-    summary:
-      "The name as the idea: colored tiles on a grout grid, keycap buttons with a real press and sunken fields.",
-    motif: "NOHO, Léo Parpeix and Neutral Studio: color-block tiles and toy-like 3D objects.",
-    signature:
-      "Keycaps that travel when pressed, tile colors in panels and hero, a grout grid on the canvas, rounded wells for fields.",
-    type: "Unbounded, Onest",
+      "Pills for actions, one large corner on surfaces, a violet focus halo, a status dot in the kicker.",
+    type: "Geist, Geist Mono",
   },
 ];
 export const modes = ["light", "dark"];
@@ -99,21 +83,23 @@ function buttonPair(props = {}) {
   ];
 }
 
-function panel(title, note, states) {
+/** A numbered section: label column (number, title, note) beside the content. */
+function block(number, title, note, content, id) {
   return h(
-    "div",
-    { className: "dd-panel" },
+    "section",
+    { className: "dd-block", "aria-labelledby": id },
     h(
       "div",
-      { className: "dd-panel-header" },
-      h("h3", { className: "dd-panel-title" }, title),
-      h("p", { className: "dd-note" }, note),
+      { className: "dd-block-label" },
+      h("p", { className: "dd-number" }, number),
+      h("h2", { className: "dd-block-title", id }, title),
+      note ? h("p", { className: "dd-note" }, note) : null,
     ),
-    h("div", { className: "dd-states" }, ...states),
+    h("div", { className: "dd-block-body" }, ...content),
   );
 }
 
-function hero(concept, mode, index) {
+function hero(concept, mode) {
   const link = (href, label, current) =>
     h("a", { href, "aria-current": current ? "page" : undefined }, label);
   return h(
@@ -121,199 +107,247 @@ function hero(concept, mode, index) {
     { className: "dd-hero" },
     h(
       "div",
-      { className: "dd-hero-text" },
+      { className: "dd-hero-meta" },
       h(
         "p",
         { className: "dd-kicker" },
-        `mosaik · design concept ${index + 1} of ${concepts.length} · ${mode}`,
+        `mosaik · direction ${concept.letter} of ${concepts.length} · ${mode}`,
       ),
-      h("h1", { className: "dd-title" }, concept.name),
-      h("p", { className: "dd-summary" }, concept.summary),
       h(
         "nav",
-        { className: "dd-nav", "aria-label": "Concepts" },
-        ...concepts.map((other, otherIndex) =>
-          link(pageFile(other, mode), `${otherIndex + 1} ${other.name}`, other === concept),
+        { className: "dd-nav", "aria-label": "Directions" },
+        ...concepts.map((other) =>
+          link(pageFile(other, mode), `${other.letter} ${other.name}`, other === concept),
         ),
         ...modes.map((other) => link(pageFile(concept, other), other, other === mode)),
       ),
     ),
     h(
       "div",
+      { className: "dd-hero-main" },
+      h(
+        "h1",
+        { className: "dd-title" },
+        h("span", { className: "dd-title-quiet" }, "mosaik "),
+        h(
+          "span",
+          { className: "dd-title-loud" },
+          concept.name,
+          h("span", { className: "dd-title-mark" }, "."),
+        ),
+      ),
+      h("p", { className: "dd-summary" }, concept.summary),
+    ),
+    h(
+      "div",
       { className: "dd-hero-art", "aria-hidden": "true" },
-      ...Array.from({ length: 9 }, () => h("span", null)),
+      ...Array.from({ length: 12 }, () => h("span", null)),
     ),
   );
 }
 
-function intro(concept) {
-  const fact = (term, text) => [h("dt", null, term), h("dd", null, text)];
+function scenario() {
+  return h(
+    "form",
+    { className: "dd-scenario", "aria-labelledby": "dd-scenario-title" },
+    h("h3", { className: "dd-form-title", id: "dd-scenario-title" }, "New download"),
+    h(TextField, {
+      className: "dd-field",
+      label: "Video link",
+      name: "link",
+      defaultValue: "https://media.example.com/talks/design-systems.mp4",
+      description: "Links to YouTube, Vimeo and direct video files work.",
+    }),
+    h(TextField, {
+      className: "dd-field",
+      label: "File name",
+      name: "fileName",
+      placeholder: "Uses the video title if empty",
+    }),
+    h(ColorField, {
+      className: "dd-field",
+      label: "Label color",
+      name: "labelColor",
+      defaultValue: "#0f766e",
+      description: "Marks this download in the queue.",
+    }),
+    h(
+      "div",
+      { className: "dd-actions" },
+      h(Button, { type: "submit", variant: "primary" }, "Start download"),
+      h(Button, null, "Cancel"),
+    ),
+  );
+}
+
+function facts(concept) {
+  const fact = (term, text) =>
+    h("div", { className: "dd-fact" }, h("dt", null, term), h("dd", null, text));
+  return h(
+    "dl",
+    { className: "dd-facts" },
+    fact("References", concept.references),
+    fact("Taken from them", concept.taken),
+    fact("Signature", concept.signature),
+    fact("Type", `${concept.type}. SIL Open Font License, linked from Google Fonts.`),
+  );
+}
+
+function buttonStates() {
   return h(
     "div",
-    { className: "dd-intro" },
-    h(
-      "form",
-      { className: "dd-panel dd-scenario", "aria-labelledby": "dd-scenario-title" },
-      h("h2", { className: "dd-panel-title", id: "dd-scenario-title" }, "New download"),
-      h(TextField, {
-        className: "dd-field",
-        label: "Video link",
-        name: "link",
-        defaultValue: "https://media.example.com/talks/design-systems.mp4",
-        description: "Links to YouTube, Vimeo and direct video files work.",
-      }),
+    { className: "dd-states" },
+    state("default", "Default", buttonPair()),
+    state("hover", "Hover", buttonPair()),
+    state("pressed", "Pressed", buttonPair()),
+    state("focus", "Focus", buttonPair()),
+    state("disabled", "Disabled", buttonPair({ disabled: true })),
+    state(
+      "long",
+      "Long text",
+      [
+        h(
+          Button,
+          { variant: "primary" },
+          "Alle markierten Downloads erneut in die Warteschlange stellen",
+        ),
+        h(Button, null, "Abbrechen und Einstellungen verwerfen"),
+      ],
+      "de",
+    ),
+  );
+}
+
+function textFieldStates() {
+  return h(
+    "div",
+    { className: "dd-states" },
+    state("default", "Default", [
       h(TextField, {
         className: "dd-field",
         label: "File name",
-        name: "fileName",
         placeholder: "Uses the video title if empty",
+        description: "Letters, numbers, spaces and hyphens.",
       }),
-      h(ColorField, {
+    ]),
+    state("focus", "Focus", [
+      h(TextField, {
         className: "dd-field",
-        label: "Label color",
-        name: "labelColor",
-        defaultValue: "#0f766e",
-        description: "Marks this download in the queue.",
+        label: "Video link",
+        defaultValue: "https://media.example.com/talk.mp4",
       }),
-      h(
-        "div",
-        { className: "dd-actions" },
-        h(Button, { type: "submit", variant: "primary" }, "Start download"),
-        h(Button, null, "Cancel"),
-      ),
-    ),
-    h(
-      "section",
-      { className: "dd-panel dd-about", "aria-labelledby": "dd-about-title" },
-      h("h2", { className: "dd-panel-title", id: "dd-about-title" }, "About this concept"),
-      h(
-        "dl",
-        { className: "dd-facts" },
-        ...fact("Motif", concept.motif),
-        ...fact("Signature", concept.signature),
-        ...fact("Type", `${concept.type} (SIL Open Font License, linked from Google Fonts)`),
-      ),
+    ]),
+    state("disabled", "Disabled", [
+      h(TextField, {
+        className: "dd-field",
+        label: "Download folder",
+        defaultValue: "D:\\Videos\\Talks",
+        description: "Fixed while a download is running.",
+        disabled: true,
+      }),
+    ]),
+    state("error", "Error", [
+      h(TextField, {
+        className: "dd-field",
+        label: "Video link",
+        defaultValue: "media.example.com/talk.mp4",
+        error: "Enter a complete link that starts with https://.",
+      }),
+    ]),
+    state(
+      "long",
+      "Long text",
+      [
+        h(TextField, {
+          className: "dd-field",
+          label: "Speicherort für automatisch heruntergeladene Untertiteldateien",
+          defaultValue: "D:\\Medien\\Vorträge\\2026\\Designsysteme-und-Komponentenbibliotheken",
+          description:
+            "Gilt für alle künftigen Downloads dieser Warteschlange, bis du ihn wieder änderst.",
+          error:
+            "Der Ordner existiert nicht oder ist schreibgeschützt. Wähle einen anderen Speicherort.",
+        }),
+      ],
+      "de",
     ),
   );
 }
 
-function states() {
-  const longPath = "D:\\Medien\\Vorträge\\2026\\Designsysteme-und-Komponentenbibliotheken";
+function colorFieldStates() {
   return h(
-    "section",
-    { className: "dd-section", "aria-labelledby": "dd-states" },
-    h("h2", { className: "dd-heading", id: "dd-states" }, "States"),
-    h(
-      "p",
-      { className: "dd-note" },
-      "Hover, pressed and focus are forced in the screenshots. In a browser, point at the buttons or move through the fields with Tab. Long texts are German, as in quiltor and mediagrab.",
+    "div",
+    { className: "dd-states" },
+    state("default", "Default", [
+      h(ColorField, {
+        className: "dd-field",
+        label: "Label color",
+        defaultValue: "#0f766e",
+        description: "Marks this download in the queue.",
+      }),
+    ]),
+    state("focus", "Focus", [
+      h(ColorField, { className: "dd-field", label: "Label color", defaultValue: "#0f766e" }),
+    ]),
+    state("disabled", "Disabled", [
+      h(ColorField, {
+        className: "dd-field",
+        label: "Label color",
+        defaultValue: "#0f766e",
+        description: "Fixed while a download is running.",
+        disabled: true,
+      }),
+    ]),
+    state(
+      "long",
+      "Long text",
+      [
+        h(ColorField, {
+          className: "dd-field",
+          label: "Hervorhebungsfarbe für fehlgeschlagene Downloads in der Warteschlange",
+          defaultValue: "#b91c1c",
+          description:
+            "Gilt für alle Einträge, deren letzter Versuch abgebrochen wurde oder fehlgeschlagen ist.",
+        }),
+      ],
+      "de",
     ),
-    panel("Button", "Primary and secondary variant. Buttons have no error state.", [
-      state("default", "Default", buttonPair()),
-      state("hover", "Hover", buttonPair()),
-      state("pressed", "Pressed", buttonPair()),
-      state("focus", "Focus", buttonPair()),
-      state("disabled", "Disabled", buttonPair({ disabled: true })),
-      state(
-        "long",
-        "Long text",
-        [
-          h(
-            Button,
-            { variant: "primary" },
-            "Alle markierten Downloads erneut in die Warteschlange stellen",
-          ),
-          h(Button, null, "Abbrechen und Einstellungen verwerfen"),
-        ],
-        "de",
-      ),
-    ]),
-    panel("TextField", "The library has no hover style for fields yet.", [
-      state("default", "Default", [
-        h(TextField, {
-          className: "dd-field",
-          label: "File name",
-          placeholder: "Uses the video title if empty",
-          description: "Letters, numbers, spaces and hyphens.",
-        }),
-      ]),
-      state("focus", "Focus", [
-        h(TextField, {
-          className: "dd-field",
-          label: "Video link",
-          defaultValue: "https://media.example.com/talk.mp4",
-        }),
-      ]),
-      state("disabled", "Disabled", [
-        h(TextField, {
-          className: "dd-field",
-          label: "Download folder",
-          defaultValue: "D:\\Videos\\Talks",
-          description: "Fixed while a download is running.",
-          disabled: true,
-        }),
-      ]),
-      state("error", "Error", [
-        h(TextField, {
-          className: "dd-field",
-          label: "Video link",
-          defaultValue: "media.example.com/talk.mp4",
-          error: "Enter a complete link that starts with https://.",
-        }),
-      ]),
-      state(
-        "long",
-        "Long text",
-        [
-          h(TextField, {
-            className: "dd-field",
-            label: "Speicherort für automatisch heruntergeladene Untertiteldateien",
-            defaultValue: longPath,
-            description:
-              "Gilt für alle künftigen Downloads dieser Warteschlange, bis du ihn wieder änderst.",
-            error:
-              "Der Ordner existiert nicht oder ist schreibgeschützt. Wähle einen anderen Speicherort.",
-          }),
-        ],
-        "de",
-      ),
-    ]),
-    panel("ColorField", "No error style: invalid text returns to the last valid color on blur.", [
-      state("default", "Default", [
-        h(ColorField, {
-          className: "dd-field",
-          label: "Label color",
-          defaultValue: "#0f766e",
-          description: "Marks this download in the queue.",
-        }),
-      ]),
-      state("focus", "Focus", [
-        h(ColorField, { className: "dd-field", label: "Label color", defaultValue: "#0f766e" }),
-      ]),
-      state("disabled", "Disabled", [
-        h(ColorField, {
-          className: "dd-field",
-          label: "Label color",
-          defaultValue: "#0f766e",
-          description: "Fixed while a download is running.",
-          disabled: true,
-        }),
-      ]),
-      state(
-        "long",
-        "Long text",
-        [
-          h(ColorField, {
-            className: "dd-field",
-            label: "Hervorhebungsfarbe für fehlgeschlagene Downloads in der Warteschlange",
-            defaultValue: "#b91c1c",
-            description:
-              "Gilt für alle Einträge, deren letzter Versuch abgebrochen wurde oder fehlgeschlagen ist.",
-          }),
-        ],
-        "de",
-      ),
-    ]),
+  );
+}
+
+function page(concept, mode) {
+  return h(
+    "main",
+    { className: "dd-page" },
+    hero(concept, mode),
+    block(
+      "01",
+      "Scenario",
+      "A small form as a download tool would use it.",
+      [scenario()],
+      "dd-block-scenario",
+    ),
+    block("02", "Direction", null, [facts(concept)], "dd-block-direction"),
+    block(
+      "03",
+      "Button",
+      "Primary and secondary. Hover, pressed and focus are forced in the screenshots; in a browser, point at them or use Tab.",
+      [buttonStates()],
+      "dd-block-button",
+    ),
+    block(
+      "04",
+      "TextField",
+      "Fields have no hover style in the library yet. Long texts are German, as in quiltor and mediagrab.",
+      [textFieldStates()],
+      "dd-block-text-field",
+    ),
+    block(
+      "05",
+      "ColorField",
+      "No error style: invalid text returns to the last valid color on blur.",
+      [colorFieldStates()],
+      "dd-block-color-field",
+    ),
   );
 }
 
@@ -347,21 +381,17 @@ export function renderPages(selection = concepts) {
   mkdirSync(outputDir, { recursive: true });
   const files = [];
   for (const concept of selection) {
-    const index = concepts.indexOf(concept);
-    const conceptCss = readFileSync(join(here, "concepts", `${concept.id}.css`), "utf8");
+    const conceptCss = readFileSync(join(here, "directions", `${concept.id}.css`), "utf8");
     for (const mode of modes) {
-      const body = renderToStaticMarkup(
-        h("main", { className: "dd-page" }, hero(concept, mode, index), intro(concept), states()),
-      );
       const file = join(outputDir, pageFile(concept, mode));
       writeFileSync(
         file,
         documentHtml({
-          title: `${index + 1} ${concept.name} · ${mode} – mosaik design concepts`,
+          title: `${concept.letter} ${concept.name} · ${mode} – mosaik design directions`,
           mode,
           concept,
           styles: [libraryCss, pageCss, conceptCss],
-          body,
+          body: renderToStaticMarkup(page(concept, mode)),
         }),
       );
       files.push(file);
@@ -371,11 +401,11 @@ export function renderPages(selection = concepts) {
     h(
       "main",
       { className: "dd-page" },
-      h("h1", { className: "dd-title" }, "mosaik · AP2 design concepts"),
+      h("h1", { className: "dd-title" }, "mosaik · AP2 design directions"),
       h(
         "ul",
         { className: "dd-index" },
-        ...concepts.flatMap((concept, conceptIndex) =>
+        ...concepts.flatMap((concept) =>
           modes.map((mode) =>
             h(
               "li",
@@ -383,7 +413,7 @@ export function renderPages(selection = concepts) {
               h(
                 "a",
                 { href: pageFile(concept, mode) },
-                `${conceptIndex + 1} ${concept.name} · ${mode}`,
+                `${concept.letter} ${concept.name} · ${mode}`,
               ),
             ),
           ),
@@ -394,7 +424,7 @@ export function renderPages(selection = concepts) {
   writeFileSync(
     join(outputDir, "index.html"),
     documentHtml({
-      title: "mosaik design concepts",
+      title: "mosaik design directions",
       mode: "light",
       styles: [libraryCss, pageCss],
       body: index,

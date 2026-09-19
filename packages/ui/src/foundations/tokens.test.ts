@@ -6,19 +6,27 @@ import { describe, expect, it } from "vitest";
 const srcDir = join(dirname(fileURLToPath(import.meta.url)), "..");
 const tokensCss = readFileSync(join(srcDir, "foundations", "tokens.css"), "utf8");
 
-// AP2 design checkpoint: the candidate design concepts live outside the library and set their own
-// values for the token roles. The contrast checks run against each of them as well.
-const conceptsDir = join(srcDir, "..", "..", "..", "explorations", "design-directions", "concepts");
-const conceptSources = readdirSync(conceptsDir)
+// AP2 design checkpoint: the candidate design directions live outside the library and set their
+// own values for the token roles. The contrast checks run against each of them as well.
+const directionsDir = join(
+  srcDir,
+  "..",
+  "..",
+  "..",
+  "explorations",
+  "design-directions",
+  "directions",
+);
+const directionSources = readdirSync(directionsDir)
   .filter((file) => file.endsWith(".css"))
   .sort()
   .map((file): [source: string, css: string] => [
-    `concept ${file}`,
-    readFileSync(join(conceptsDir, file), "utf8"),
+    `direction ${file}`,
+    readFileSync(join(directionsDir, file), "utf8"),
   ]);
 const tokenSources: Array<[source: string, css: string]> = [
   ["tokens.css", tokensCss],
-  ...conceptSources,
+  ...directionSources,
 ];
 
 const stripComments = (css: string) => css.replace(/\/\*[\s\S]*?\*\//g, "");
@@ -99,7 +107,7 @@ describe.each(tokenSources)("foundation color tokens: %s", (_source, css) => {
   }
 });
 
-describe("design concepts (AP2 checkpoint)", () => {
+describe("design directions (AP2 checkpoint)", () => {
   /** Declared custom property names, including the private mode toggles. */
   const declaredNames = (css: string) =>
     [...new Set([...stripComments(css).matchAll(/(--_?mosaik-[a-z0-9-]+)\s*:/g)].map((m) => m[1]))]
@@ -107,12 +115,13 @@ describe("design concepts (AP2 checkpoint)", () => {
       .sort();
   const libraryRoles = declaredNames(tokensCss).filter((name) => !name.startsWith("--_"));
 
-  it("offers five concepts", () => {
-    expect(conceptSources).toHaveLength(5);
+  it("offers two or three directions", () => {
+    expect(directionSources.length).toBeGreaterThanOrEqual(2);
+    expect(directionSources.length).toBeLessThanOrEqual(3);
   });
 
-  // Concept-specific properties use the --dd- prefix, so every --mosaik- name must be a role.
-  it.each(conceptSources)(
+  // Direction-specific properties use the --dd- prefix, so every --mosaik- name must be a role.
+  it.each(directionSources)(
     "%s sets every library role, adds no --mosaik- role and leaves the mode toggles alone",
     (_source, css) => {
       expect(declaredNames(css)).toEqual(libraryRoles);

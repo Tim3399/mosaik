@@ -1,7 +1,8 @@
 /*
- * Shared structure of the AP2 concept pages: layout only. Exploration code, not part of the
- * library. Each concept stylesheet loads after this file and gives the page its look.
- * Components receive outer layout through className, as the component contract allows.
+ * Shared structure of the AP2 direction pages: layout only. Exploration code, not part of the
+ * library. Each direction stylesheet loads after this file and gives the page its look.
+ * Sections put a label column (number, title, note) beside the content, as in the owner's
+ * references. Components receive outer layout through className, as the contract allows.
  */
 .dd-body {
   margin: 0;
@@ -17,49 +18,60 @@
   display: flex;
   flex-direction: column;
   gap: var(--mosaik-spacing-section);
-  max-width: 76rem;
+  max-width: 88rem;
   margin-inline: auto;
   padding: var(--mosaik-spacing-section) var(--mosaik-spacing-regular);
 }
 
-.dd-hero {
+.dd-hero,
+.dd-block {
   display: grid;
-  gap: var(--mosaik-spacing-section);
+  gap: var(--mosaik-spacing-regular);
   min-width: 0;
 }
 
-.dd-hero-text,
-.dd-section,
-.dd-panel-header {
+.dd-hero-meta,
+.dd-hero-main,
+.dd-block-label {
   display: flex;
   flex-direction: column;
   gap: var(--mosaik-spacing-compact);
   min-width: 0;
 }
 
+.dd-hero-main {
+  gap: var(--mosaik-spacing-regular);
+}
+
 .dd-hero-art {
-  position: relative;
-  min-height: 9rem;
+  display: none;
 }
 
 .dd-title,
-.dd-heading,
-.dd-panel-title,
+.dd-block-title,
+.dd-form-title,
 .dd-summary,
 .dd-note,
 .dd-caption,
-.dd-kicker {
+.dd-kicker,
+.dd-number {
   margin: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+}
+
+.dd-title-quiet,
+.dd-title-loud {
+  display: block;
 }
 
 .dd-summary {
-  max-width: 60ch;
+  max-width: 56ch;
 }
 
 .dd-nav {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--mosaik-spacing-compact) var(--mosaik-spacing-regular);
 }
 
@@ -72,31 +84,35 @@
   outline-offset: var(--mosaik-focus-ring-offset);
 }
 
-.dd-intro {
-  display: grid;
-  gap: var(--mosaik-spacing-section);
-  align-items: start;
+.dd-block-body {
+  min-width: 0;
 }
 
-.dd-panel {
-  box-sizing: border-box;
+.dd-scenario {
   display: flex;
   flex-direction: column;
   gap: var(--mosaik-spacing-regular);
-  min-width: 0;
+  max-width: 32rem;
   margin: 0;
-  padding: var(--mosaik-spacing-regular);
-  background-color: var(--mosaik-color-surface);
 }
 
 .dd-facts {
   display: grid;
-  gap: var(--mosaik-spacing-compact);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--mosaik-spacing-regular) var(--mosaik-spacing-section);
   margin: 0;
 }
 
-.dd-facts dd {
-  margin: 0 0 var(--mosaik-spacing-compact);
+.dd-fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mosaik-spacing-compact);
+  min-width: 0;
+}
+
+.dd-fact dt,
+.dd-fact dd {
+  margin: 0;
 }
 
 .dd-actions,
@@ -113,7 +129,7 @@
 
 .dd-states {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
   gap: var(--mosaik-spacing-section) var(--mosaik-spacing-regular);
 }
 
@@ -133,12 +149,9 @@
 }
 
 @media (min-width: 60rem) {
-  .dd-hero {
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-    align-items: end;
-  }
-
-  .dd-intro {
-    grid-template-columns: minmax(0, 31rem) minmax(0, 1fr);
+  .dd-hero,
+  .dd-block {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    column-gap: var(--mosaik-spacing-section);
   }
 }

@@ -1,0 +1,215 @@
+/*
+ * Direction B "Kern", after DAQ Consulting and Boon Global: a black stage with visible columns.
+ * Thin and heavy type in one headline, bone white, monospaced micro labels, hairline buttons
+ * with an arrow and a single amber signal for focus and emphasis. Light mode is bone paper.
+ *
+ * AP2 exploration, not part of the library. The first block sets every library token role
+ * (color tokens in the toggle form of decisions D-15); --dd-* properties belong to this
+ * direction. The rules below restyle the rendered components for the prototype only.
+ */
+:root,
+[data-mosaik-mode] {
+  --mosaik-color-canvas: var(--_mosaik-light, #efebe3) var(--_mosaik-dark, #0a0a0a);
+  --mosaik-color-surface: var(--_mosaik-light, #efebe3) var(--_mosaik-dark, #0a0a0a);
+  --mosaik-color-field: var(--_mosaik-light, #f7f4ee) var(--_mosaik-dark, #0f0f0f);
+  --mosaik-color-text: var(--_mosaik-light, #0e0e0e) var(--_mosaik-dark, #ece8df);
+  --mosaik-color-text-muted: var(--_mosaik-light, #5f5b54) var(--_mosaik-dark, #8e8a83);
+  --mosaik-color-border: var(--_mosaik-light, #d4cec3) var(--_mosaik-dark, #262626);
+  --mosaik-color-border-strong: var(--_mosaik-light, #6e6a64) var(--_mosaik-dark, #6e6a64);
+  --mosaik-color-subtle-hover: var(--_mosaik-light, #e6e1d7) var(--_mosaik-dark, #161616);
+  --mosaik-color-subtle-active: var(--_mosaik-light, #dbd5c9) var(--_mosaik-dark, #1f1f1f);
+  --mosaik-color-disabled-surface: var(--_mosaik-light, #e6e1d7) var(--_mosaik-dark, #121212);
+  --mosaik-color-disabled-text: var(--_mosaik-light, #a39d92) var(--_mosaik-dark, #4d4a46);
+  --mosaik-color-focus: var(--_mosaik-light, #b15c00) var(--_mosaik-dark, #ffb020);
+  --mosaik-color-danger: var(--_mosaik-light, #c0261c) var(--_mosaik-dark, #ff5f52);
+  --mosaik-accent-solid: var(--_mosaik-light, #0e0e0e) var(--_mosaik-dark, #ece8df);
+  --mosaik-accent-solid-hover: var(--_mosaik-light, #2a2a2a) var(--_mosaik-dark, #ffffff);
+  --mosaik-accent-solid-active: var(--_mosaik-light, #000000) var(--_mosaik-dark, #d6d1c7);
+  --mosaik-accent-on-solid: var(--_mosaik-light, #efebe3) var(--_mosaik-dark, #0a0a0a);
+
+  --mosaik-font-family: "Inter", system-ui, sans-serif;
+  --mosaik-font-family-mono: "Geist Mono", ui-monospace, monospace;
+  --mosaik-text-body-size: 0.9375rem;
+  --mosaik-text-body-line: 1.55;
+  --mosaik-text-body-weight: 400;
+  --mosaik-text-control-size: 0.875rem;
+  --mosaik-text-control-line: 1.2;
+  --mosaik-text-control-weight: 500;
+  --mosaik-text-label-size: 0.75rem;
+  --mosaik-text-label-line: 1.3;
+  --mosaik-text-label-weight: 500;
+  --mosaik-text-meta-size: 0.8125rem;
+  --mosaik-text-meta-line: 1.5;
+  --mosaik-text-meta-weight: 400;
+
+  --mosaik-spacing-optical: 0.25rem;
+  --mosaik-spacing-compact: 0.5rem;
+  --mosaik-spacing-regular: 1.25rem;
+  --mosaik-spacing-section: 3.5rem;
+
+  --mosaik-size-control: 2.75rem;
+  --mosaik-radius-control: 0;
+  --mosaik-radius-surface: 0;
+  --mosaik-border-width: 1px;
+  --mosaik-focus-ring-width: 1px;
+  --mosaik-focus-ring-offset: 3px;
+  --mosaik-duration-fast: 140ms;
+
+  --dd-amber: var(--_mosaik-light, #8f4a00) var(--_mosaik-dark, #ffb020);
+  --dd-column-line: var(--_mosaik-light, #0e0e0e0f) var(--_mosaik-dark, #ffffff0c);
+}
+
+@media (pointer: coarse) {
+  :root,
+  [data-mosaik-mode] {
+    --mosaik-size-control: 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-mosaik-mode] {
+    --mosaik-duration-fast: 0ms;
+  }
+}
+
+/* Components -------------------------------------------------------------------------- */
+
+.mosaik-button {
+  padding-inline: 1.25rem;
+}
+
+.mosaik-button[data-variant="primary"]::after {
+  content: "→" / "";
+  margin-inline-start: 0.75em;
+}
+
+.mosaik-button[data-variant="secondary"] {
+  border-color: var(--mosaik-color-border-strong);
+  background-color: transparent;
+  font-family: var(--mosaik-font-family-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.mosaik-button[data-variant="secondary"]:hover:not(:disabled) {
+  border-color: var(--mosaik-color-text);
+}
+
+.mosaik-button[data-variant="secondary"]:disabled {
+  border-color: var(--mosaik-color-border);
+  background-color: transparent;
+}
+
+.mosaik-text-field__label,
+.mosaik-color-field__label {
+  font-family: var(--mosaik-font-family-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--mosaik-color-text-muted);
+}
+
+.mosaik-text-field__input:focus-visible,
+.mosaik-color-field__input:focus-visible,
+.mosaik-color-field__picker:focus-visible {
+  border-color: var(--mosaik-color-focus);
+}
+
+.mosaik-color-field__picker {
+  height: auto;
+}
+
+/* Page ------------------------------------------------------------------------------- */
+
+.dd-body {
+  background-image: linear-gradient(90deg, var(--dd-column-line) 1px, transparent 1px);
+  background-size: calc(100% / 12) 100%;
+}
+
+.dd-kicker,
+.dd-nav,
+.dd-number,
+.dd-caption,
+.dd-summary,
+.dd-fact dt {
+  font-family: var(--mosaik-font-family-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.dd-kicker,
+.dd-caption,
+.dd-fact dt {
+  color: var(--mosaik-color-text-muted);
+}
+
+.dd-nav a {
+  text-decoration: none;
+  color: var(--mosaik-color-text-muted);
+}
+
+.dd-nav a[aria-current="page"] {
+  color: var(--mosaik-color-text);
+}
+
+.dd-nav a[aria-current="page"]::before {
+  content: "" / "";
+  display: inline-block;
+  width: 1.25em;
+  height: 1px;
+  margin-inline-end: 0.6em;
+  vertical-align: 0.3em;
+  background-color: currentcolor;
+}
+
+.dd-title {
+  font-size: clamp(3.25rem, 9vw, 8.25rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.dd-title-quiet {
+  font-weight: 200;
+}
+
+.dd-title-loud {
+  font-weight: 800;
+}
+
+.dd-title-mark {
+  color: var(--dd-amber);
+}
+
+.dd-summary {
+  line-height: 1.7;
+  color: var(--mosaik-color-text-muted);
+}
+
+.dd-block {
+  padding-top: var(--mosaik-spacing-regular);
+  border-top: 1px solid var(--mosaik-color-border);
+}
+
+.dd-number {
+  color: var(--dd-amber);
+}
+
+.dd-number::after {
+  content: " /" / "";
+}
+
+.dd-block-title {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.dd-form-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
