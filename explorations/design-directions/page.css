@@ -1,7 +1,7 @@
 /*
- * Layout of the AP2 specimen pages. Exploration code, not part of the library. It uses the
- * foundation tokens only, so each design direction also shapes this page. Components receive
- * outer layout through className, as the component contract allows.
+ * Shared structure of the AP2 concept pages: layout only. Exploration code, not part of the
+ * library. Each concept stylesheet loads after this file and gives the page its look.
+ * Components receive outer layout through className, as the component contract allows.
  */
 .dd-body {
   margin: 0;
@@ -17,21 +17,29 @@
   display: flex;
   flex-direction: column;
   gap: var(--mosaik-spacing-section);
-  max-width: 72rem;
+  max-width: 76rem;
   margin-inline: auto;
   padding: var(--mosaik-spacing-section) var(--mosaik-spacing-regular);
 }
 
-.dd-header,
+.dd-hero {
+  display: grid;
+  gap: var(--mosaik-spacing-section);
+  min-width: 0;
+}
+
+.dd-hero-text,
 .dd-section,
 .dd-panel-header {
   display: flex;
   flex-direction: column;
   gap: var(--mosaik-spacing-compact);
+  min-width: 0;
 }
 
-.dd-section {
-  gap: var(--mosaik-spacing-regular);
+.dd-hero-art {
+  position: relative;
+  min-height: 9rem;
 }
 
 .dd-title,
@@ -42,70 +50,32 @@
 .dd-caption,
 .dd-kicker {
   margin: 0;
-}
-
-/*
- * The library has no heading roles yet. These page headings stay above every direction's label
- * role in size and weight, so they do not distort the hierarchy of the specimens.
- */
-.dd-title {
-  font-size: calc(var(--mosaik-text-body-size) * 1.75);
-  line-height: 1.2;
-  font-weight: 700;
-}
-
-.dd-heading {
-  font-size: calc(var(--mosaik-text-body-size) * 1.375);
-  line-height: 1.25;
-  font-weight: 700;
-}
-
-.dd-panel-title {
-  font-size: calc(var(--mosaik-text-body-size) * 1.125);
-  line-height: 1.3;
-  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .dd-summary {
-  max-width: 65ch;
-  color: var(--mosaik-color-text-muted);
-}
-
-.dd-kicker,
-.dd-note,
-.dd-caption {
-  font-size: var(--mosaik-text-meta-size);
-  line-height: var(--mosaik-text-meta-line);
-  color: var(--mosaik-color-text-muted);
+  max-width: 60ch;
 }
 
 .dd-nav {
   display: flex;
   flex-wrap: wrap;
   gap: var(--mosaik-spacing-compact) var(--mosaik-spacing-regular);
-  font-size: var(--mosaik-text-meta-size);
-  line-height: var(--mosaik-text-meta-line);
-}
-
-.dd-nav-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--mosaik-spacing-compact);
 }
 
 .dd-nav a {
-  color: var(--mosaik-color-text);
-  text-underline-offset: 0.2em;
-}
-
-.dd-nav a[aria-current="page"] {
-  font-weight: 700;
-  text-decoration: none;
+  color: inherit;
 }
 
 .dd-nav a:focus-visible {
   outline: var(--mosaik-focus-ring-width) solid var(--mosaik-color-focus);
   outline-offset: var(--mosaik-focus-ring-offset);
+}
+
+.dd-intro {
+  display: grid;
+  gap: var(--mosaik-spacing-section);
+  align-items: start;
 }
 
 .dd-panel {
@@ -116,13 +86,17 @@
   min-width: 0;
   margin: 0;
   padding: var(--mosaik-spacing-regular);
-  border: var(--mosaik-border-width) solid var(--mosaik-color-border);
-  border-radius: var(--mosaik-radius-surface);
   background-color: var(--mosaik-color-surface);
 }
 
-.dd-scenario {
-  max-width: 30rem;
+.dd-facts {
+  display: grid;
+  gap: var(--mosaik-spacing-compact);
+  margin: 0;
+}
+
+.dd-facts dd {
+  margin: 0 0 var(--mosaik-spacing-compact);
 }
 
 .dd-actions,
@@ -156,4 +130,15 @@
   gap: var(--mosaik-spacing-compact);
   margin: 0;
   padding-inline-start: var(--mosaik-spacing-regular);
+}
+
+@media (min-width: 60rem) {
+  .dd-hero {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: end;
+  }
+
+  .dd-intro {
+    grid-template-columns: minmax(0, 31rem) minmax(0, 1fr);
+  }
 }

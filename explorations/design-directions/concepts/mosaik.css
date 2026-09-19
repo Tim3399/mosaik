@@ -1,0 +1,309 @@
+/*
+ * Concept 5 "Mosaik": the name as the idea. Colored tiles on a grout grid, keycap buttons
+ * with a real press and sunken fields. In dark mode the tiles sit on a deep violet-black.
+ *
+ * AP2 exploration, not part of the library. The first block sets every library token role
+ * (color tokens in the toggle form of decisions D-15); --dd-* properties belong to this
+ * concept. The rules below restyle the rendered components for the prototype only.
+ */
+:root,
+[data-mosaik-mode] {
+  --mosaik-color-canvas: var(--_mosaik-light, #eee8dd) var(--_mosaik-dark, #16141a);
+  --mosaik-color-surface: var(--_mosaik-light, #fbf8f2) var(--_mosaik-dark, #211e26);
+  --mosaik-color-field: var(--_mosaik-light, #fffdf9) var(--_mosaik-dark, #1a171f);
+  --mosaik-color-text: var(--_mosaik-light, #1f1a15) var(--_mosaik-dark, #f2ede4);
+  --mosaik-color-text-muted: var(--_mosaik-light, #5f574d) var(--_mosaik-dark, #b3aba0);
+  --mosaik-color-border: var(--_mosaik-light, #e0d8ca) var(--_mosaik-dark, #302c36);
+  --mosaik-color-border-strong: var(--_mosaik-light, #8a8072) var(--_mosaik-dark, #7d7588);
+  --mosaik-color-subtle-hover: var(--_mosaik-light, #f3ede3) var(--_mosaik-dark, #2a2630);
+  --mosaik-color-subtle-active: var(--_mosaik-light, #e8e0d2) var(--_mosaik-dark, #353040);
+  --mosaik-color-disabled-surface: var(--_mosaik-light, #ebe5da) var(--_mosaik-dark, #24212a);
+  --mosaik-color-disabled-text: var(--_mosaik-light, #a1978a) var(--_mosaik-dark, #5e5866);
+  --mosaik-color-focus: var(--_mosaik-light, #1f1a15) var(--_mosaik-dark, #f2ede4);
+  --mosaik-color-danger: var(--_mosaik-light, #b3261e) var(--_mosaik-dark, #ff8a7a);
+  --mosaik-accent-solid: var(--_mosaik-light, #f0573a) var(--_mosaik-dark, #ff6a4d);
+  --mosaik-accent-solid-hover: var(--_mosaik-light, #f36b50) var(--_mosaik-dark, #ff8266);
+  --mosaik-accent-solid-active: var(--_mosaik-light, #ea5335) var(--_mosaik-dark, #f5573a);
+  --mosaik-accent-on-solid: var(--_mosaik-light, #1f1a15) var(--_mosaik-dark, #16141a);
+
+  --mosaik-font-family: "Onest", system-ui, sans-serif;
+  --mosaik-font-family-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  --mosaik-text-body-size: 1rem;
+  --mosaik-text-body-line: 1.5;
+  --mosaik-text-body-weight: 400;
+  --mosaik-text-control-size: 0.8125rem;
+  --mosaik-text-control-line: 1.25;
+  --mosaik-text-control-weight: 600;
+  --mosaik-text-label-size: 0.9375rem;
+  --mosaik-text-label-line: 1.3;
+  --mosaik-text-label-weight: 600;
+  --mosaik-text-meta-size: 0.875rem;
+  --mosaik-text-meta-line: 1.45;
+  --mosaik-text-meta-weight: 400;
+
+  --mosaik-spacing-optical: 0.25rem;
+  --mosaik-spacing-compact: 0.5rem;
+  --mosaik-spacing-regular: 1.25rem;
+  --mosaik-spacing-section: 2.75rem;
+
+  --mosaik-size-control: 3rem;
+  --mosaik-radius-control: 0.875rem;
+  --mosaik-radius-surface: 1.75rem;
+  --mosaik-border-width: 2px;
+  --mosaik-focus-ring-width: 3px;
+  --mosaik-focus-ring-offset: 3px;
+  --mosaik-duration-fast: 110ms;
+
+  --dd-display: "Unbounded", "Onest", system-ui, sans-serif;
+  --dd-tomato: #f0573a;
+  --dd-mustard: #f5c542;
+  --dd-lilac: #b7a4f6;
+  --dd-olive: #9fb03a;
+  --dd-sky: #79c3f2;
+  --dd-mint: #97dcbc;
+  --dd-key-edge: var(--_mosaik-light, #cfc5b5) var(--_mosaik-dark, #0c0a0f);
+  --dd-accent-edge: var(--_mosaik-light, #b8341f) var(--_mosaik-dark, #b83a22);
+  --dd-panel-edge: var(--_mosaik-light, #ddd4c5) var(--_mosaik-dark, #0e0c11);
+  --dd-grout: var(--_mosaik-light, #1f1a1512) var(--_mosaik-dark, #ffffff0d);
+  --dd-well: var(--_mosaik-light, #1f1a1512) var(--_mosaik-dark, #0000004d);
+}
+
+@media (pointer: coarse) {
+  :root,
+  [data-mosaik-mode] {
+    --mosaik-size-control: 3.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-mosaik-mode] {
+    --mosaik-duration-fast: 0ms;
+  }
+}
+
+/* Components -------------------------------------------------------------------------- */
+
+.mosaik-button {
+  --dd-edge: var(--dd-key-edge);
+  font-family: var(--dd-display);
+  box-shadow:
+    inset 0 2px 0 #ffffff59,
+    inset 0 -3px 0 #0000001f,
+    0 4px 0 var(--dd-edge),
+    0 10px 16px -8px #00000059;
+  transition-property: background-color, border-color, color, box-shadow, transform;
+}
+
+.mosaik-button[data-variant="primary"] {
+  --dd-edge: var(--dd-accent-edge);
+}
+
+.mosaik-button[data-variant="secondary"] {
+  border-color: var(--mosaik-color-border);
+  background-color: var(--mosaik-color-field);
+}
+
+.mosaik-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 2px 0 #ffffff59,
+    inset 0 -3px 0 #0000001f,
+    0 5px 0 var(--dd-edge),
+    0 14px 20px -10px #00000066;
+}
+
+.mosaik-button:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 0 #ffffff33,
+    inset 0 -1px 0 #0000001f,
+    0 1px 0 var(--dd-edge);
+}
+
+.mosaik-button:disabled {
+  border: var(--mosaik-border-width) dashed var(--mosaik-color-disabled-text);
+  box-shadow: none;
+}
+
+.mosaik-text-field__input,
+.mosaik-color-field__input {
+  box-shadow: inset 0 3px 0 var(--dd-well);
+}
+
+.mosaik-text-field__input:disabled,
+.mosaik-color-field__input:disabled,
+.mosaik-color-field__picker:disabled {
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.mosaik-color-field__picker {
+  height: auto;
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.mosaik-text-field__input:focus-visible,
+.mosaik-color-field__input:focus-visible {
+  border-color: var(--mosaik-color-text);
+}
+
+.mosaik-text-field__error::before {
+  content: "";
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-inline-end: 0.45em;
+  border-radius: 3px;
+  background-color: var(--dd-tomato);
+  vertical-align: -0.05em;
+}
+
+/* Page ------------------------------------------------------------------------------- */
+
+.dd-body {
+  background-image:
+    linear-gradient(var(--dd-grout) 2px, transparent 2px),
+    linear-gradient(90deg, var(--dd-grout) 2px, transparent 2px);
+  background-size: 36px 36px;
+}
+
+.dd-kicker,
+.dd-caption,
+.dd-facts dt {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.dd-title,
+.dd-heading,
+.dd-panel-title {
+  font-family: var(--dd-display);
+}
+
+.dd-title {
+  font-size: clamp(3.25rem, 12vw, 8rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+}
+
+.dd-summary {
+  font-size: 1.1875rem;
+  line-height: 1.45;
+}
+
+.dd-nav {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.dd-nav a {
+  padding: 0.35em 0.8em;
+  border-radius: 999px;
+  background-color: var(--mosaik-color-surface);
+  box-shadow: 0 2px 0 var(--dd-panel-edge);
+  text-decoration: none;
+}
+
+.dd-nav a[aria-current="page"] {
+  background-color: var(--mosaik-color-text);
+  color: var(--mosaik-color-canvas);
+}
+
+.dd-hero-art {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  width: min(100%, 19rem);
+  aspect-ratio: 1;
+  min-height: 0;
+  justify-self: end;
+}
+
+.dd-hero-art span {
+  --dd-tile: var(--dd-tomato);
+  border-radius: 24%;
+  background-color: var(--dd-tile);
+  box-shadow:
+    inset 0 3px 0 #ffffff66,
+    inset 0 -5px 0 #00000026,
+    0 5px 0 color-mix(in srgb, var(--dd-tile), #000 28%);
+}
+
+.dd-hero-art span:nth-child(2) {
+  --dd-tile: var(--dd-mustard);
+}
+
+.dd-hero-art span:nth-child(3) {
+  --dd-tile: var(--dd-lilac);
+}
+
+.dd-hero-art span:nth-child(4) {
+  --dd-tile: var(--dd-sky);
+}
+
+.dd-hero-art span:nth-child(5) {
+  --dd-tile: var(--mosaik-color-text);
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 3px 0 #ffffff33,
+    0 1px 0 #000;
+}
+
+.dd-hero-art span:nth-child(6) {
+  --dd-tile: var(--dd-olive);
+}
+
+.dd-hero-art span:nth-child(7) {
+  --dd-tile: var(--dd-mint);
+}
+
+.dd-hero-art span:nth-child(8) {
+  --dd-tile: var(--dd-tomato);
+}
+
+.dd-hero-art span:nth-child(9) {
+  --dd-tile: var(--dd-mustard);
+}
+
+.dd-heading {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.dd-panel {
+  border: 2px solid var(--mosaik-color-border);
+  border-radius: var(--mosaik-radius-surface);
+  box-shadow: 0 6px 0 var(--dd-panel-edge);
+}
+
+.dd-panel-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.dd-panel-title::after {
+  content: "";
+  display: block;
+  width: 6rem;
+  height: 0.75rem;
+  margin-top: 0.6rem;
+  border-radius: 4px;
+  background-image: linear-gradient(
+    90deg,
+    var(--dd-tomato) 0 22%,
+    transparent 22% 26%,
+    var(--dd-mustard) 26% 48%,
+    transparent 48% 52%,
+    var(--dd-lilac) 52% 74%,
+    transparent 74% 78%,
+    var(--dd-sky) 78% 100%
+  );
+}
